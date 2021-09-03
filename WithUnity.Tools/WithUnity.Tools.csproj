@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageId>WithUnity.Tools</PackageId>
+    <Version>1.0.1-zeta</Version>
+    <Authors>Robin Murison</Authors>
+    <Description>
+      Written for the use by withunity.org
+      WithUnity.Tools is a set of tools used to make C# a more functional language.
+      It Provide fluent validation using the Result Classes and extension methods.
+      The Result classes allow a certain level of Logging that can be added to this validation.
+
+      The MayBe&lt;T&gt; struct is ued to identify parameter and return values that may be an object or may be null.
+      NullGuard is used through out to ensure that any Object passed when always expecting an object will throw a NullArgumentException.
+
+      It also includes some Value Properties. That are write once properties that contain their own Validation and will throw InvalidCastException if the underlying
+      data passed in to the constructor does pass validation. EmailAddress, FileExtension and UnicodeCharacter. Contains the standard comparison operators and GetHashCode()
+
+      It also contains some SecureString extensions. SecureString have never been secure, the extensions help the visible data to stay
+      in memory as much as possible and wipes the memory once the inspection is complete.
+
+      TODO: Add link to online documentation.
+    </Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>false</Optimize>
+    <DocumentationFile>C:\DevTrees\Robins\WithUnity.Tools\WithUnity.Tools\WithUnity.Tools.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NullGuard.Fody" Version="3.0.0" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="5.0.1" />
+  </ItemGroup>
+
+</Project>
