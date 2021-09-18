@@ -28,9 +28,14 @@ namespace WithUnity.Tools.Tests
                 // Asserts
                 Assert.Fail("email address without @ accepted.");
             }
-            catch (InvalidCastException ex)
+            catch (InvalidCastException )
             {
                 // Asserts
+            }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
             }
         }
 
