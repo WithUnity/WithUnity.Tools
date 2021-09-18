@@ -4,9 +4,16 @@
 |Date|Version|Author|Details|
 |----|-------|------|-------|
 |2021/09/03|1.0.0.0|Robin Murison|First public publication|
+<<<<<<< HEAD
 
 ##Abbstract
 Blesec.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
+=======
+|2021/09/16|1.0.0.1|Robin Murison|Corrected ReadMe.md and added more comprehensive Unit Tests for the Log class.|
+
+##Abbstract
+WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
+>>>>>>> WU0001-AddingTheTools
 We intend to add Task templates to provide appropriate parallel processing. Although C# Tasks are fine for the job Using of the templates would allow cross cutting logging and other concerns.
 
 The two main features to make method declaration more honest. Use the MayBe structure when there is an expectation that null maybe a valid reference as a parameter.

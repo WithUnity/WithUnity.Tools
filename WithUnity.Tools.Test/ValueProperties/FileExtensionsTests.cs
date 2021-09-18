@@ -116,15 +116,5 @@ namespace WithUnity.Tools.Tests
                 Assert.IsTrue(ex.Message.Contains("The extension should not contain full stops."));
             }
         }
-
-        //[Test]
-        //public static void TestTemplate()
-        //{
-        //    // Arrange
-
-        //    // Act
-
-        //    // Asserts
-        //}
     }
 }
