@@ -23,19 +23,22 @@ namespace WithUnity.Tools
     public static class Log // : IAspect
     {
         /// <summary>
-        /// The level of requested logging
-        /// Both for reading and writing logs.
+        /// Enum designating The level of logging requested and written
+        /// Used Both for reading and writing logs.
         /// </summary>
         public enum Level : int
         {
             /// <summary>
-            /// All logging
+            /// Write logging that is only shown if Verbose logging is turned on for reading.
+            /// Read: Read all logging regardless of Level written.
             /// </summary>
             Verbose = 1,
             /// <summary>
-            /// Debugging logs
+            /// Write logging while debugging software.
+            /// Read: Reads all logging regardless of Level written.
             /// </summary>
             Debug = 2,
+
             /// <summary>
             /// Information logging messages
             /// </summary>

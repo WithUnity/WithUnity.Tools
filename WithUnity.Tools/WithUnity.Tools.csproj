@@ -1,26 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <PackageId>WithUnity.Tools</PackageId>
-    <Version>1.0.1-zeta</Version>
+    <Version>1.0.2-alpha</Version>
     <Authors>Robin Murison</Authors>
-    <Description>
-      Written for the use by withunity.org
-      WithUnity.Tools is a set of tools used to make C# a more functional language.
-      It Provide fluent validation using the Result Classes and extension methods.
-      The Result classes allow a certain level of Logging that can be added to this validation.
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
+We intend to add Task templates to provide appropriate parallel processing. Although C# Tasks are fine for the job Using of the templates would allow cross cutting logging and other concerns.
 
-      The MayBe&lt;T&gt; struct is ued to identify parameter and return values that may be an object or may be null.
-      NullGuard is used through out to ensure that any Object passed when always expecting an object will throw a NullArgumentException.
+The two main features to make method declaration more honest. Use the MayBe structure when there is an expectation that null maybe a valid reference as a parameter.
+WHen there is a possibility that a method may fail, use the Result&lt;T&gt; classe to return either the valid object or the relevant error message. 
+The backlog has a mission to add the option to use error codes to allow localized of error messages, where these messages need to be publically displayed.
 
-      It also includes some Value Properties. That are write once properties that contain their own Validation and will throw InvalidCastException if the underlying
-      data passed in to the constructor does pass validation. EmailAddress, FileExtension and UnicodeCharacter. Contains the standard comparison operators and GetHashCode()
+There is also a Log class that can be initialized to provide automatic logging from the Result class. With Verbose successes and Error level failures failures and informational notes.
 
-      It also contains some SecureString extensions. SecureString have never been secure, the extensions help the visible data to stay
-      in memory as much as possible and wipes the memory once the inspection is complete.
+There is also the ValueProperty to create readonly properties. Used to add validation to individual properties and to make using the ValueProperty class transparent to the user.
 
-      TODO: Add link to online documentation.
-    </Description>
+There are also a few implementation of a ValueProperty showing how to validation should be implemeted in the constructor and should throw InvalidCastException when invalid data is passed in.
+
+ValueProperty can be implicitly used as the underlying type, this is to make them just as usable as the underlying data type.
+
+Result uses some Reflexive tools to log from where errors occur in the Logging. 
+The Logging and the Reflexive tools are independent of using the Result validation mechanism.
+</Description>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,6 +32,17 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <ApplicationIcon>blackbackgroundwithunitylogo512_sDg_icon.ico</ApplicationIcon>
+    <Copyright>Copyright 2015-2021 Robin Murison Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</Copyright>
+    <PackageIcon>BlackBackgroundWithUnityLogo512.png</PackageIcon>
+    <PackageIconUrl />
+    <PackageProjectUrl>https://github.com/WithUnity/WithUnity.Tools/projects/1</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/WithUnity/WithUnity.Tools</RepositoryUrl>
+    <RepositoryType>Github public</RepositoryType>
+    <PackageTags>Functional Honesty Cooperation</PackageTags>
+    <PackageReleaseNotes>This is a test release to get all the issues of releasing a Nuget Package correct.</PackageReleaseNotes>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -45,5 +60,20 @@
     <PackageReference Include="NullGuard.Fody" Version="3.0.0" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="5.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\BlackBackgroundWithUnityLogo512.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="PxtlCa.XmlCommentMarkDownGenerator.exe -i &quot;$(TargetDir)\WithUnity.Tools.xml&quot; -o  &quot;$(SolutionDir)WithUnity.Tools.md&quot;" />
+  </Target>
 
 </Project>
