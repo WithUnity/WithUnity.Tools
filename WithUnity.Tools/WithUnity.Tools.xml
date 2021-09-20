@@ -1,0 +1,1538 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WithUnity.Tools</name>
+    </assembly>
+    <members>
+        <member name="T:WithUnity.Tools.Log">
+            <summary>
+            A class for generic logging
+            </summary>
+        </member>
+        <member name="T:WithUnity.Tools.Log.Level">
+            <summary>
+            The level of requested logging
+            Both for reading and writing logs.
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Level.Verbose">
+            <summary>
+            All logging
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Level.Debug">
+            <summary>
+            Debugging logs
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Level.Information">
+            <summary>
+            Information logging messages
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Level.Warning">
+            <summary>
+            Warning Logging
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Level.Error">
+            <summary>
+            Error Logs
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Level.UnknownState">
+            <summary>
+            This is for pieces of code that should never run.
+            This extreme level of error can only occur because of bugs. e.g. a switch statement that already has a case for all the possible values of the Enum
+            should keep a separate 'default:' case too. to log unknown states and normally should never run. 
+            This is to protect code from the situation where someone adds a new value to the enum without knowing about all the switch statements.
+            You cannot hide UnknownState logging. You may prefer to throw an exception but that may increase the problem in production rather than containing the problem.
+            </summary>
+            <remarks>Unkown states are always logged to Visual Studio Debug as well as the Sinks requested and also throw exceptions in Debug mode</remarks>
+        </member>
+        <member name="T:WithUnity.Tools.Log.Sink">
+            <summary>
+            Places you can log your errors to
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Sink.Console">
+            <summary>
+            The command line
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Sink.Debug">
+            <summary>
+            To the Visual Studio Debug output window
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Sink.File">
+            <summary>
+            To a Log file in the %TEMP% directory using the calling assembly's name + ".log"
+            </summary>
+        </member>
+        <member name="F:WithUnity.Tools.Log.Levels">
+            <summary>
+            Used as a Level ToString() to give strings the same length
+            to keep the log alignment the same so that it is easier to read.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Log.DefaultOutputs">
+            <summary>
+            Contains the list of sinks to the default methods used to implement them
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Log.Outputs">
+            <summary>
+            Contains a list of sinks to the methods used to implement them
+            </summary>
+        </member>
+<<<<<<< HEAD
+        <member name="M:WithUnity.Tools.Log.Initialise(WithUnity.Tools.Log.Level,WithUnity.Tools.Log.Sink[],System.Boolean,System.Boolean)">
+=======
+        <member name="P:WithUnity.Tools.Log.Locks">
+            <summary>
+            Mutex locks used across Process for locking the log file for a particular assembly.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Log.LockOfLocks">
+            <summary>
+            Mutex lock to manage Locks.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Initialise(WithUnity.Tools.Log.Level,WithUnity.Tools.Log.Sink[],System.Boolean,System.Boolean,System.String)">
+>>>>>>> WU0001-AddingTheTools
+            <summary>
+            Initializas the log
+            </summary>
+            <param name="level">The minimum level of logging to record. (Verbose &lt; Debug &lt; Information &lt; Warning &lt; Error &lt; UnkownState)</param>
+            <param name="sinks">An array of sinks you want to use</param>
+            <param name="timeOffset"></param>
+            <param name="utc"><see langword="true"/> logs things against UTC time <see langword="false"/> logs against local system time.</param>
+<<<<<<< HEAD
+=======
+            <param name="logFileName">Optional name of the Log file, only used when there is a File sink, defaults to %TEMP%\EntryAssemblyName.log</param>
+>>>>>>> WU0001-AddingTheTools
+        </member>
+        <member name="M:WithUnity.Tools.Log.SetLoggingLevel(WithUnity.Tools.Log.Level)">
+            <summary>
+            To change the logging level for a certain part of the code
+            </summary>
+            <param name="newLevel">The new minimum logging level</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.SetLogPrefixText(WithUnity.Tools.Log.Level)">
+            <summary>
+            Set Log Prefix adds The appropriate dateTime or DateTimeOffset followed by the calling Assembly's name and the warning level to the message
+            </summary>
+            <param name="level"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.Log.WriteToLogs(WithUnity.Tools.Log.Level,System.String)">
+            <summary>
+            Writes of an accepted logging level to each of the sinks in turn.
+            </summary>
+            <param name="level">The level of the message</param>
+            <param name="text"></param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.BaseLogging(WithUnity.Tools.Log.Level,System.String)">
+            <summary>
+            The base logging writing some text to the log
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.Log.BaseLogging(WithUnity.Tools.Log.Level,System.Exception)">
+            <summary>
+            The basic Logging for exception Logs the exception and all inner exceptions
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.Log.BaseLogging(WithUnity.Tools.Log.Level,System.String,System.Object[])">
+            <summary>
+            BaseLogging with a format string and an array of parameters
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Warning(System.String)">
+            <summary>
+            Log a warning
+            </summary>
+            <param name="text">The text to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Warning(System.Exception)">
+            <summary>
+            Log a warning message about an exception
+            </summary>
+            <param name="exception">The exception to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Warning(System.String,System.Object[])">
+            <summary>
+            Log a formatted warning message
+            </summary>
+            <param name="format">The format string used in string.Format(format, parameters)</param>
+            <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.VerboseOk">
+            <summary>
+            Log a verbose OK message
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Verbose(System.String)">
+            <summary>
+            Log a verbose message
+            </summary>
+            <param name="text">The text to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Verbose(System.Exception)">
+            <summary>
+            Log a verbose message about an exception
+            </summary>
+            <param name="exception">The exception to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Verbose(System.String,System.Object[])">
+            <summary>
+            Log a formatted verbose message
+            </summary>
+            <param name="format">The format string used in string.Format(format, parameters)</param>
+            <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Information(System.String)">
+            <summary>
+            Log an information message
+            </summary>
+            <param name="text">The text to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Information(System.Exception)">
+            <summary>
+            Log an information message about an exception
+            </summary>
+            <param name="exception">The exception to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Information(System.String,System.Object[])">
+            <summary>
+            Log a formatted information message
+            </summary>
+            <param name="format">The format string used in string.Format(format, parameters)</param>
+            <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Debug(System.String)">
+            <summary>
+            Log a Debug message
+            </summary>
+            <param name="text">The text to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Debug(System.Exception)">
+            <summary>
+            Log an debug message about an exception
+            </summary>
+            <param name="exception">The exception to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Debug(System.String,System.Object[])">
+            <summary>
+            Log a formatted Debug message
+            </summary>
+            <param name="format">The format string used in string.Format(format, parameters)</param>
+            <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Error(System.String)">
+            <summary>
+            Log an Error message
+            </summary>
+            <param name="text">The text to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Error(System.Exception)">
+            <summary>
+            Log an Error message about an exception
+            </summary>
+            <param name="exception">The exception to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.Error(System.String,System.Object[])">
+            <summary>
+            Log a formatted Error message
+            </summary>
+            <param name="format">The format string used in string.Format(format, parameters)</param>
+            <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.UnknownState(System.String)">
+            <summary>
+            Log an UnkownState message
+            </summary>
+            <param name="text">The text to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.UnknownState(System.Exception)">
+            <summary>
+            Log an UnknownState message about an exception
+            </summary>
+            <param name="exception">The exception to log</param>
+        </member>
+        <member name="M:WithUnity.Tools.Log.UnknownState(System.String,System.Object[])">
+            <summary>
+            Log a UnknownState Error message
+            </summary>
+            <param name="format">The format string used in string.Format(format, parameters)</param>
+            <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
+        </member>
+        <member name="T:WithUnity.Tools.MayBe`1">
+            <summary>
+            Here to document the fact that we are expecting
+            this refernce to allow null.
+            
+            Use Fody
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:WithUnity.Tools.MayBe`1.Value">
+            <summary>
+            The Value contained by the MayBe structure.
+            Throws an exception if their is no Value.
+            </summary>
+            <exception>InvalidOperationException</exception>
+        </member>
+        <member name="P:WithUnity.Tools.MayBe`1.HasValue">
+            <summary>
+            Test if there is a Value to protect against accessing the Value if there is none
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.MayBe`1.HasNoValue">
+            <summary>
+            Test if there is not a Value: usually for error logging
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.#ctor(`0)">
+            <summary>
+            Internal constructor not for general use.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.ToMayBe(`0)">
+            <summary>
+            Explicit conversion from a base value of type T and a MayBe&lt;T&gt;
+            </summary>
+            <remarks>This intrinsically a static function. 
+            Instantiating another instance just to new another instance would be insane nesting 
+            and impossible with a internal constructor.</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.op_Implicit(`0)~WithUnity.Tools.MayBe{`0}">
+            <summary>
+            Implicit conversion from a base value of type T and a MayBe&lt;T&gt;
+            </summary>
+            <param name="value">The incoming value of type T</param>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.op_Equality(WithUnity.Tools.MayBe{`0},`0)">
+            <summary>
+            == comparison between MayBe&lt;T&gt; and T
+            </summary>
+            <param name="maybe">The MayBe&lt;T&gt; type value</param>
+            <param name="value">The T type value</param>
+            <returns>true if the Value of maybe == value</returns>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.op_Inequality(WithUnity.Tools.MayBe{`0},`0)">
+            <summary>
+            != comparison between MayBe&lt;T&gt; and T
+            </summary>
+            <param name="maybe">The MayBe&lt;T&gt; type value</param>
+            <param name="value">The T type value</param>
+            <returns>false if the Value of maybe == value</returns>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.op_Equality(WithUnity.Tools.MayBe{`0},WithUnity.Tools.MayBe{`0})">
+            <summary>
+            == comparison between MayBe&lt;T&gt; and another MayBe&lt;T&gt;
+            </summary>
+            <param name="first">A MayBe&lt;T&gt; type value</param>
+            <param name="second">Another MayBe&lt;T&gt; type value</param>
+            <returns>first.equals(second)</returns>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.op_Inequality(WithUnity.Tools.MayBe{`0},WithUnity.Tools.MayBe{`0})">
+            <summary>
+            == comparison between MayBe&lt;T&gt; and another MayBe&lt;T&gt;
+            </summary>
+            <param name="first">A MayBe&lt;T&gt; type value</param>
+            <param name="second">Another MayBe&lt;T&gt; type value</param>
+            <returns>!first.equals(second)</returns>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.Equals(System.Object)">
+            <summary>
+            Equals comparison between this and any object
+            </summary>
+            <param name="obj">The object to compare against this</param>
+            <returns>true if the Value of this MayBe == obj</returns>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.GetHashCode">
+            <summary>
+            returns the hash for this instance.
+            </summary>
+            <returns>The hash code</returns>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.Equals(WithUnity.Tools.MayBe{`0})">
+            <summary>
+            Equals comparison between this and another MayBe&lt;T&gt;.
+            </summary>
+            <param name="other">The other MayBe&lt;T&gt; to compare against this</param>
+            <returns>true if they are equal</returns>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.ToString">
+            <summary>
+            The stanard override for ToString() for a MayBe&lt;T&gt;. 
+            </summary>
+            <returns>The Value.ToString()</returns>
+            <exception cref="T:System.InvalidOperationException">if there is no value</exception>
+        </member>
+        <member name="M:WithUnity.Tools.MayBe`1.Unwrap(`0)">
+            <summary>
+            Returns the Value of the MayBe&lt;T&gt; or the default value if it is null 
+            </summary>
+            <returns>The Value or default(T) if it has no Value</returns>
+        </member>
+        <member name="T:WithUnity.Tools.MayBeExtensions">
+            <summary>
+            An Extension method for MayBe structures.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.MayBeExtensions.ToMayBe``1(``0)">
+            <summary>
+            Explicit Conversion to MayBe&lt;T&gt;
+            </summary>
+            <typeparam name="T">The underlying type</typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WithUnity.Tools.ReflectiveTools">
+            <summary>
+            Refelctive tools for accessing types indirectly
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.CurrentMethod">
+            <summary>
+            CurrentMethod returns the name of the method or property calling it.
+            </summary>
+            <returns>The name of the calling method or property.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.CallingMethod(System.Int32)">
+            <summary>
+            CallingMethod returns the name of parent method or property that are calling this function.
+            </summary>
+            <param name="stackFrames">The number of ancestors to use. Defaults to one.</param>
+            <returns>The name of the calling method or property.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.CallingFileColumnNumber(System.Int32)">
+            <summary>
+            Gets the column number in the file that contains the code that is executing.
+            This information is typically extracted from the debugging symbols for the executable.
+            </summary>
+            <param name="stackFrames"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.CallingFileLineNumber(System.Int32)">
+            <summary>
+            Gets the line number in the file that contains the code that is executing.
+            This information is typically extracted from the debugging symbols 
+            for the executable.  This call may be several calls deep
+            </summary>
+            <param name="stackFrames"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.CallingFileName(System.Int32)">
+            <summary>
+            Gets the file in which this method is being called from.  This call may be several calls deep
+            </summary>
+            <param name="stackFrames">The numbers of levels deep before we report the name.</param>
+            <returns>The file name</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.UnsafeCurrentMethod(System.String)">
+            <summary>
+            While this method has an optional parameter it should never be used
+            </summary>
+            <param name="methodName">Must all ways be null.</param>
+            <returns>The name of the calling method or the input string.</returns>
+            <remarks>This uses standard tools to achieve the same effect as CurrentMethod
+            but it can be fooled if someone actually uses the optional parameter.</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.TestFoundMethod(System.Reflection.MethodInfo,System.Type,System.Type[],System.Object[])">
+            <summary>
+            Finds a method which has the same number of Generic type parameters
+            the same return type and the same parameters including whether they 
+            match the expected generic type
+            </summary>
+            <param name="method">The Method this method is checked against</param>
+            <param name="returnType">The expected return Type.  This may be a generic type</param>
+            <param name="types">A list of generic types this method should be called with.</param>
+            <param name="parameters">A list of parameters this shoulf be called with.</param>
+            <returns>True if we find a match, false otherwise.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.FoundMethod(System.Reflection.MethodInfo,System.Type,System.Type[],System.Object[])">
+            <summary>
+            Finds a method which has the same number of Generic type parameters
+            the same return type and the same parameters including whether they 
+            match the expected generic type
+            </summary>
+            <param name="method">The Method this method is checked against</param>
+            <param name="returnType">The expected return Type.  This may be a generic type</param>
+            <param name="types">A list of generic types this method should be called with.</param>
+            <param name="parameters">A list of parameters this shoulf be called with.</param>
+            <returns>True if we find a match, false otherwise.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.VoidCall(System.Object,System.Type,System.Object[],System.String)">
+            <summary>
+            Call a generic function by passing in a single Type as 
+            a parameter and the parameters as an array of objects.
+            </summary>
+            <param name="callingObject">The object calling this method</param>
+            <param name="t">The Type to use</param>
+            <param name="parameters">An array of parameters</param>
+            <param name="methodName">The name of the method to call. Defaults to the same name as the calling method</param>
+            <returns>a generic object the return value of the method</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.VoidCall(System.Object,System.Type[],System.Object[],System.String)">
+            <summary>
+            Call a generic function by passing in the Type as 
+            a parameter
+            
+            </summary>
+            <param name="callingObject">The object calling this method</param>
+            <param name="types">The Types to use</param>
+            <param name="parameters">An array of parameters</param>
+            <param name="methodName">The name of the method to call. Defaults to the same name as the calling method</param>
+            <returns>a generic object the return value of the method</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.Call(System.Object,System.Type,System.Type,System.Object[],System.String)">
+            <summary>
+            Call a generic function by passing in a single Type as 
+            a parameter and the parameters as an array of objects.
+            </summary>
+            <param name="callingObject">The object calling this method</param>
+            <param name="returnType">The return type of the method to call</param>
+            <param name="t">The Type to use</param>
+            <param name="parameters">An array of parameters</param>
+            <param name="methodName">The name of the method to call. Defaults to the same name as the calling method</param>
+            <returns>a generic object the return value of the method</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.Call(System.Object,System.Type,System.Type[],System.Object[],System.String)">
+            <summary>
+            Call a generic function by passing in the Type as 
+            a parameter
+            
+            </summary>
+            <param name="callingObject">The object calling this method</param>
+            <param name="returnType">The type returned</param>
+            <param name="types">The Types to use</param>
+            <param name="parameters">An array of parameters</param>
+            <param name="methodName">The name of the method to call. Defaults to the same name as the calling method</param>
+            <returns>a generic object the return value of the method</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.ShortName(System.String)">
+            <summary>
+            Get the Short name from the long name.
+            First excludes the full path with versions and keys
+            Then exludes the assembly informaiton.
+            </summary>
+            <param name="fullName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.GetReferencedAssembliesFlat(System.Type)">
+            <summary>
+                Intent: Get assemblies referenced by entry assembly. Not recursive.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.GetLoadedAssemblies(System.Reflection.Assembly)">
+            <summary>
+                Intent: Get assemblies the entry assembly currently needs.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.GetLoadedAssemblies(System.Reflection.Assembly,System.Collections.Generic.IDictionary{System.String,System.String}@)">
+            <summary>
+                Intent: Get assemblies the entry assembly currently needs and any assemblies that have not been found.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.GetDependentAssemblies(System.Reflection.Assembly,System.Collections.Generic.IDictionary{System.String,System.Reflection.Assembly},System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+                Intent: Internal recursive class to get all dependent assemblies, and all dependent assemblies of
+                dependent assemblies, etc.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ReflectiveTools.MyGetMissingAssembliesRecursive(System.Reflection.Assembly)">
+            <summary>
+                Intent: Get missing assemblies.
+            </summary>
+        </member>
+        <member name="T:WithUnity.Tools.Result">
+            <summary>
+            Wraps the results of methods into a standard class.
+            
+            This allows a series of method calls to be chained.
+            
+            This means that you can do error handling in a lot cleaner way.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Result.IsSuccess">
+            <summary>
+            Used to test for a successful result.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Result.HasNotes">
+            <summary>
+            Used to test whether the results has any notes.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Result.Error">
+            <summary>
+            The returned error message.
+            This returns the first error that caused a failure.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Result.Notes">
+            <summary>
+            A list of Notes.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Result.IsFailure">
+            <summary>
+            Used to test if the result is a failure.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Result.Exception">
+            <summary>
+            Used to store an exception, if an exception caused the failure
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Result.CallingMethod">
+            <summary>
+            Used for logging errors so that we can log where the error occured.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.Result.#ctor(WithUnity.Tools.Result)">
+            <summary>
+            Constructs a new copy of a result from the previous version
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:WithUnity.Tools.Result.#ctor(System.Boolean,System.String,System.String)">
+            <summary>
+            The protected constructor. Used when a logically discovered error or success was found.
+            </summary>
+            <param name="isSuccess">Whether the result is a success</param>
+            <param name="error">If the result is a failure this contains the error message</param>
+            <param name="callingMethod">The method that is expecting the result used for logging errors.</param>
+            <exception cref="T:System.InvalidOperationException">If IsSuccess and there is an error text xor It is not a success and there is not an error text.</exception>
+        </member>
+        <member name="M:WithUnity.Tools.Result.#ctor(System.Exception,System.String)">
+            <summary>
+            The protected constructor. Used when an error occurs due to an exception.
+            </summary>
+            <param name="exception">If the result is a failure this contains the error message</param>
+            <param name="callingMethod">The method that is expecting the result used for logging errors.</param>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Fail(System.String)">
+            <summary>
+            Static failure Result constructor method.
+            </summary>
+            <param name="message">Some text giving the reason for the failure.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Fail(System.Exception)">
+            <summary>
+            Static failure Result constructor method.
+            </summary>
+            <param name="exception">The exception that caused the failure</param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Fail``1(System.String,System.String)">
+            <summary>
+            Fail&lt;T&gt; returns a failure with the appropriate message.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="message">The error message you want to use</param>
+            <param name="callingMethod">Should be left at the default blank string. Present for internal use.</param>
+            <returns>A typed result with a failure report.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Fail``1(System.Exception,System.String)">
+            <summary>
+            Fail&lt;T&gt; returns a failure with the appropriate exception and message.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="exception">The excepion you need to report</param>
+            <param name="callingMethod">Should be left at the default blank string. Present for internal use.</param>
+            <returns>A typed result with a failure report.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Ok">
+            <summary>
+            The standard OK constructor method
+            </summary>
+            <returns>An OK result</returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Ok``1(``0,System.String)">
+            <summary>
+            Ok sets up a valid value of the <![CDATA[.]]>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <param name="callingMethod">This should be left at the default value. Only used for internal use.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Initialize``1(``0,System.String,System.String)">
+            <summary>
+            Initialize takes the current value and if it is not Null then it does the same as OK
+            and if it is null then it does the same as Fail
+            </summary>
+            <param name="value">The value to set</param>
+            <param name="error">The error message to show if this is null</param>
+            <param name="callingMethod">The method receiving the Result</param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Initialize``1(WithUnity.Tools.MayBe{``0},System.String,System.String)">
+            <summary>
+            Initialize takes the current value and if it is not Null then it does the same as OK
+            and if it is null then it does the same as Fail
+            </summary>
+            <param name="value">The value to set</param>
+            <param name="error">The error message to show if this is null</param>
+            <param name="callingMethod">The method receiving the Result</param>
+            <returns>The validated result</returns>
+        </member>
+        <member name="M:WithUnity.Tools.Result.Initialize(System.Boolean,System.String)">
+            <summary>
+            Result.Initialize uses a boolean predicate to set a Result to Ok if true or fail if false.
+            </summary>
+            <param name="predicate">The predicate to create an Ok Result or a failed Result.</param>
+            <param name="errorMessage">The Error message to store in case the predicate is false.</param>
+            <returns>The next result in the chain</returns>
+            <remarks>This is using Result to simplify if tests as opposed to recording a true failure.
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.Result.AddNote(System.String)">
+            <summary>
+            AddNote adds a note that can be used to allow the calling method to
+            have more information than a task succeeded  or failed.
+            Mainly used for debugging or testing for unusual conditions.
+            </summary>
+            <param name="newNote">A comment on an unusual event.</param>
+        </member>
+        <member name="T:WithUnity.Tools.Result`1">
+            <summary>
+            Result&lt;T&gt; is a Result that holds some data on success.
+            </summary>
+            <typeparam name="T">The type of data the Result holds</typeparam>
+        </member>
+        <member name="P:WithUnity.Tools.Result`1.Value">
+            <summary>
+            The Value held of Type T.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.Result`1.#ctor(WithUnity.Tools.Result{`0})">
+            <summary>
+            The Result constructor used internally to pass on a previous Result
+            </summary>
+            <param name="result">A previous result</param>
+        </member>
+        <member name="M:WithUnity.Tools.Result`1.#ctor(`0,System.Boolean,System.String,System.String)">
+            <summary>
+            The Result constructor used internally with an error message
+            </summary>
+            <param name="value">The value to be stored</param>
+            <param name="isSuccess">Whether the Result is a success (true) or a failure (false)</param>
+            <param name="error">Text containing the an explanation of the error that caused a failure if it failed</param>
+            <param name="callingMethod">The method that called the public constructor for logging purposes.</param>
+        </member>
+        <member name="M:WithUnity.Tools.Result`1.#ctor(`0,System.Exception,System.String)">
+            <summary>
+            The Result constructor used internally with an exception
+            </summary>
+            <param name="value">The value to be stored</param>
+            <param name="exception">The exception that caused the failure</param>
+            <param name="callingMethod">The method that called the public constructor for logging purposes.</param>
+        </member>
+        <member name="M:WithUnity.Tools.Result`1.ToResult(`0)">
+            <summary>
+            Implicitly casts an object T to the appropriate Result.
+            Returns Fail() if null or OK if a valid value
+            </summary>
+            <param name="value">A potentially null pointer</param>
+            <remarks>TODO: Add unit test</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.Result`1.op_Implicit(`0)~WithUnity.Tools.Result{`0}">
+            <summary>
+            Implicitly casts an object T to the appropriate Result.
+            Returns Fail() if null or OK if a valid value
+            </summary>
+            <param name="value">A potentially null pointer</param>
+            <remarks>TODO: Add unit test</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.Result`1.Initialize(`0,System.String)">
+            <summary>
+            Initialize takes the current value and if it is not Null the does the same as OK
+            and if it is null then it does the same as Fail
+            </summary>
+            <param name="value">The value to set</param>
+            <param name="error">The error message to show if this is null</param>
+            <returns></returns>
+        </member>
+        <member name="T:WithUnity.Tools.ResultExtensions">
+            <summary>
+            A series of error validation
+            methods to call methods either 
+            OnSuccess OnFailure or OnBoth.
+            OnSuccess usually Chains to the next item in the list unless an error occured in which case it passes on the error.
+            OnFailure does something only if the result has already failed. The Error is passed down the list.
+            All subsequent OnSuccess fail.
+            OnBoth happens in either case. e.g. releasing memory or logging.
+            Ensure queries a predicate method or value. If the predicate fails, it raises an error that is passed on or the previous value is passed on.
+            Add as many variants as you need for the methods you use.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.ToResult``1(WithUnity.Tools.MayBe{``0},System.String)">
+            <summary>
+            Usually used in Get data calls.
+            Converts the object to a Result.
+            </summary>
+            <typeparam name="T">The type of object got</typeparam>
+            <param name="nullable">The MayBe reference to the object</param>
+            <param name="errorMessage">The Error message we want to show users or log.</param>
+            <returns>The result to the Get call wrapped up in a Result.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess(WithUnity.Tools.Result,System.Action)">
+            <summary>
+            If the result is a success then we call the Action
+            otherwise we pass on the failed result.
+            </summary>
+            <param name="result">The incoming result</param>
+            <param name="action">The void method to call.</param>
+            <returns>The next result in the chain.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess``1(WithUnity.Tools.Result{``0},System.Action)">
+            <summary>
+            OnSuccess calls an action only if previous steps are successful.
+            This is for house keeping actions. That do not affect the Result.
+            </summary>
+            <typeparam name="T">The inpout and output type</typeparam>
+            <param name="result">The Incoming and out goiut</param>
+            <param name="action">The Action to run</param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess``1(WithUnity.Tools.Result{``0},System.Action{``0})">
+            <summary>
+            OnSuccess calls a function to modify the Value.
+            </summary>
+            <typeparam name="T">The input and output type</typeparam>
+            <param name="result">The Incoming and out going</param>
+            <param name="action">An action that uses the value but does not change it.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess``1(WithUnity.Tools.Result{``0},System.Func{``0,``0})">
+            <summary>
+            OnSuccess calls a function to modify the Value.
+            </summary>
+            <typeparam name="T">The input and output type</typeparam>
+            <param name="result">The Incoming result.</param>
+            <param name="func">The Func to run</param>
+            <returns>A replacement Result with a modifed Value.</returns>
+            <remarks>Note this version does not allow for error checking.</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess``1(WithUnity.Tools.Result{``0},System.Func{``0,WithUnity.Tools.Result{``0}})">
+            <summary>
+            if all previous steps are successful, OnSuccess calls a Function on the value and returns a Result<typeparamref name="T"/>.
+            This is for house keeping actions. That do not affect the Result.
+            </summary>
+            <typeparam name="T">The input and output type</typeparam>
+            <param name="result">The Incoming and out going</param>
+            <param name="func">The Func to run that does error checking</param>
+            <returns>A new Result&lt;T&gt; with a modifed Value and possibly an error result.</returns>
+            <remarks>Note this version does not allow for error checking.</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess``1(WithUnity.Tools.Result{``0},System.Func{``0,WithUnity.Tools.Result})">
+            <summary>
+            if all previous steps are successful, OnSuccess calls a function and returns.
+            This is for house keeping actions. That do not affect the Result.
+            </summary>
+            <typeparam name="T">The input and output Result<typeparamref name="T"/>, unless func fails</typeparam>
+            <param name="result">The Incoming and out going result</param>
+            <param name="func">The Function to run</param>
+            <returns>
+            1. If it has previously failed it returns that failure;
+            2. If the Func was a failure then it returns that failure;
+            3. If the Func was a success is passes on the Previous the Result with the previous Value.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess``2(WithUnity.Tools.Result{``0},System.Func{``0,``1})">
+            <summary>
+            if all previous steps are successful, OnSuccess use a function that changes input type Result&lt;TInput&gt; to output type Resukt&lt;TOutput&gt;
+            </summary>
+            <typeparam name="TInput">The incoming Result&lt;TInput&gt;</typeparam>
+            <typeparam name="TOutput">The returned Result&lt;TOutput&gt;</typeparam>
+            <param name="result">The incoming result</param>
+            <param name="func">The function used to swap between the two types</param>
+            <remarks>There is no error handling in the Func and it has to succeed. 
+            If you want error handling add a similar static method replacing Func&lt;TInput, TOutput&gt; with Func&lt;TInput, Result&lt;TOutput&gt;&gt;</remarks>
+            <returns>
+            1. If it has previously a failed, it returns that failure. Otherwise it calls the func;
+            2. If returns a new Result&lt;TOutput&gt; containing the return value of the Func.
+            </returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess``2(WithUnity.Tools.Result{``0},System.Func{``0,WithUnity.Tools.Result{``1}})">
+            <summary>
+            if all previous steps are successful, OnSuccess use a function that changes input type Result&lt;TInput&gt; to output type Resukt&lt;TOutput&gt;
+            </summary>
+            <typeparam name="TInput">The incoming Result&lt;TInput&gt;</typeparam>
+            <typeparam name="TOutput">The returned Result&lt;TOutput&gt;</typeparam>
+            <param name="result">The incoming result</param>
+            <param name="func">The function takes incoming TInput and directly returns a Result&lt;<typeparamref name="TOutput"/>&gt; that can be returned directly</param>
+            <remarks>This version has error handling</remarks>
+            <returns>
+            1. If it has previously a failed, it returns that failure. Otherwise it calls the func;
+            2. If returns a new Result&lt;TOutput&gt; containing the return value of the Func.
+            </returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnSuccess(WithUnity.Tools.Result,System.Func{WithUnity.Tools.Result})">
+            <summary>
+            If the previous result has not failed then we call the Function
+            returning a Result otherwise we pass the failed result.
+            down the list.
+            </summary>
+            <param name="result">The incoming result</param>
+            <param name="func">The method returning a Result to call.</param>
+            <returns>The failure result passed down the chain or the return result of the Function.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnFailure(WithUnity.Tools.Result,System.Action)">
+            <summary>
+            If the result has failed then we call the Action
+            otherwise we pass on the failed result.
+            </summary>
+            <param name="result">The incoming result</param>
+            <param name="action">The void method to call. Usually error 
+            reporting or returning an error.</param>
+            <returns>Passes the Result down the chain.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnFailureGeneratedDefault``1(WithUnity.Tools.Result{``0},System.Func{WithUnity.Tools.Result{``0}})">
+            <summary>
+            OnFailure it generate a replacement default value. OnSuccess it is left as was.
+            If you need to handle success before generating a default always call OnSuccess first because OnFailureGeneratedDefault will also be a success.
+            Note: the default value will normally be a success. At least I cannot think of a reason why you would generate a bad default.
+            </summary>
+            <typeparam name="T">The data wrapped in this Result&lt;T&gt;</typeparam>
+            <param name="result">The incoming result</param>
+            <param name="func">A function to generate a default replacement value.</param>
+            <returns>On Failure it generates a new valid Result, On Success it Passes the Result down the chain.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnFailure``1(WithUnity.Tools.Result{``0},System.Action)">
+            <summary>
+            If the result has failed then we call the Action
+            otherwise we pass on the failed result.
+            </summary>
+            <typeparam name="T">The data wrapped in this Result&lt;T&gt;</typeparam>
+            <param name="result">The incoming result</param>
+            <param name="action">The void method to call. Usually error 
+            reporting or returning an error.</param>
+            <returns>Passes the Result down the chain.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnFailure(WithUnity.Tools.Result,System.Action{System.String})">
+            <summary>
+            If the result has failed then we call the Action
+            otherwise we pass on the failed result.
+            </summary>
+            <param name="result">The incoming result</param>
+            <param name="action">A method call that takes the current Error message.</param>
+            <returns>Passes the Result down the chain.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnFailure``1(WithUnity.Tools.Result{``0},System.Action{System.String})">
+            <summary>
+            If the result has failed then we Report the Error value
+            otherwise we pass on the result.
+            </summary>
+            <typeparam name="T">The type of the contained data.</typeparam>
+            <param name="result">The incoming result</param>
+            <param name="action">The void method to call. That OnFailure reports the error or throws an exception.</param>
+            <returns>Passes the result down the chain.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnBoth(WithUnity.Tools.Result,System.Action{WithUnity.Tools.Result})">
+            <summary>
+            We call the Action regardless of the Result
+            and pass the Result down the Chain.
+            </summary>
+            <param name="result">The incoming result</param>
+            <param name="action">The void method to call. that uses or affects the result. Usually closing files or handles...</param>
+            <returns>Passes the Result down the chain.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnBoth(WithUnity.Tools.Result,System.Action)">
+            <summary>
+            We call the Action regardless of the Result
+            and pass the Result down the Chain.
+            </summary>
+            <param name="result">The incoming result</param>
+            <param name="action">The void method to call. That has no use for the result. Usually closing files or handles...</param>
+            <returns>Passes the Result down the chain.</returns>
+            <remarks>TODO Unit tests</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.OnBoth``1(WithUnity.Tools.Result,System.Func{WithUnity.Tools.Result,``0})">
+            <summary>
+            We call the Function regardless of the Result
+            and pass in the Result.
+            It then returns a value of Type T.
+            </summary>
+            <typeparam name="T">The type the func returns</typeparam>
+            <param name="result">The incoming result</param>
+            <param name="func">The Func to call on that Result that will return a value of type T</param>
+            <returns>Data of an unspecified Type</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Ensure``1(WithUnity.Tools.Result{``0},System.Func{``0,System.Boolean},System.String)">
+            <summary>
+            Ensures that a predicate is true if not it raises an Error
+            </summary>
+            <typeparam name="T">Incoming wrapped type</typeparam>
+            <param name="result">Incoming Resukt object</param>
+            <param name="predicate">The loical predicate method to perform</param>
+            <param name="errorMessage">Error message</param>
+            <returns>The next result in the chain</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Ensure``1(WithUnity.Tools.Result{``0},System.Func{System.Boolean},System.String)">
+            <summary>
+            Ensures that a predicate is true if not it raises an Error, using a lamda function.
+            </summary>
+            <typeparam name="T">Type of  wrapped data</typeparam>
+            <param name="result">Incoming Result object</param>
+            <param name="predicate">The logical predicate method to perform</param>
+            <param name="errorMessage">Error message</param>
+            <returns>The next result in the chain</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Ensure``1(WithUnity.Tools.Result{``0},System.Boolean,System.String)">
+            <summary>
+            Ensures that a predicate is true if not it raises an Error
+            </summary>
+            <typeparam name="T">Type of  wrapped data</typeparam>
+            <param name="result">Incoming Resukt object</param>
+            <param name="predicate">The logical predicate method to perform</param>
+            <param name="errorMessage">Error message</param>
+            <returns>The next result in the chain</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Ensure(WithUnity.Tools.Result,System.Func{System.Boolean},System.String)">
+            <summary>
+            Ensures that a predicate is true if not it raises an Error. Using a function or Lamda.
+            </summary>
+            <param name="result">Incoming Result object</param>
+            <param name="predicate">The logical predicate method to perform</param>
+            <param name="errorMessage">Error message</param>
+            <returns>The next result in the chain</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Ensure(WithUnity.Tools.Result,System.Boolean,System.String)">
+            <summary>
+            Ensures that a predicate is true if not it raises an Error
+            </summary>
+            <param name="result">Incoming Result object</param>
+            <param name="predicate">The logical predicate as a boolean</param>
+            <param name="errorMessage">Error message</param>
+            <returns>The next result in the chain</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Ensure``1(WithUnity.Tools.Result{``0},System.Boolean,System.String,System.Boolean@,System.Collections.Generic.ICollection{System.String})">
+            <summary>
+            Ensures that a predicate is true if not it raises an Error.
+            It also returns the result of the Predicate in an out parameter and
+            adds any errors to a collection of error strings.
+            </summary>
+            <typeparam name="T">Type of  wrapped data</typeparam>
+            <param name="result">Incoming Result object</param>
+            <param name="predicate">The local predicate method to perform</param>
+            <param name="errorMessage">Error message</param>
+            <param name="storedResult">Allows the result to be stored for separate processing</param>
+            <param name="errors">A collection of error messages to store all errors.</param>
+            <returns>The next result in the chain</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Ensure(WithUnity.Tools.Result,WithUnity.Tools.MayBe{System.Object[]},WithUnity.Tools.MayBe{System.Object[]},System.Func{System.Object,System.Object,System.Boolean},System.Func{System.Int32,System.String},System.Func{System.Int32,System.Int32,System.String},System.Func{System.Int32,System.Object,System.Object,System.String})">
+            <summary>
+            Ensures that a predicate is true if not it raises an Error
+            over the whole of an array.
+            The input arrays may be null and so we test for that too
+            and return true if they are both null or wrongLengthErrorMessage if only one of them is null.
+            </summary>
+            <param name="result">Incoming Resukt object</param>
+            <param name="array1">The first array to be compared (Maybe null)</param>
+            <param name="array2">The second array to be compared against (Maybe null).</param>
+            <param name="predicate">The logical predicate method to perform. Note null arrays are considered equal.</param>
+            <param name="NullErrorMessage">A Function to return which parameter array [1 or 2] is null assuming only one of them is null.</param>
+            <param name="wrongLengthErrorMessage">A wrong length method. The length of the two arrays will be passed in.</param>
+            <param name="predicateErrorMessage">A method to return the predicate Error Message.  
+            This allows the use of parameters without forcing you to use them. The parameters passed in are the offset 
+            and the two objects that differ at that offset.</param>
+            <returns>The next result in the chain</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.Initialize``1(WithUnity.Tools.MayBe{``0},System.String)">
+            <summary>
+            Initialize ensures that the data is a valid object and returns a Result.Fail&lt;T&gt; if it is not
+            or returns the A Result.Ok&lt;T&gt; if the constructor is OK.
+            </summary>
+            <typeparam name="T">Type of  wrapped data</typeparam>
+            <param name="data">data is a structure MayBe&lt;T*gt; that can contain null or a value</param>
+            <param name="errorMessage">Error message</param>
+            <returns>The next result in the chain</returns>
+            <remarks>TODO: Add unit tests</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ResultExtensions.StripData``1(WithUnity.Tools.Result{``0})">
+            <summary>
+            Converts a Result&lt;<typeparamref name="T"/>&gt; to a Result, because. Some results need to hide the data.
+            </summary>
+            <typeparam name="T">The type of the underlying data</typeparam>
+            <param name="result">The incoming result.</param>
+            <returns>A simple Result with out the data.</returns>
+        </member>
+        <member name="T:WithUnity.Tools.SecureStringExtensions">
+            <summary>
+            SecureString extension methods
+            and related string extension methods
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.WipeString(System.String)">
+            <summary>
+            Wipes the memory of an insecure string setting the characters to 0.
+            Users should set the length to 0 after a call to WipeString
+            to better hide the previous values length assign a new value to the 
+            immutable reference and allow GC to dispose the nulled strigns. 
+            See examples of use below.
+            </summary>
+            <param name="insecurePassword">a plain text string that needs to be wiped clean before being released back to general memory</param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.UseContents(System.Security.SecureString,System.Object[],System.Func{System.Object[],System.String,WithUnity.Tools.Result},System.Boolean)">
+            <summary>
+            Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory.
+            The text is filled with NUL characters before releasing it and is by default garbage collected.
+            </summary>
+            <param name="securePassword">The hidden data</param>
+            <param name="parameters">An array of parameters that are used by the function</param>
+            <param name="func">The function you want to use the hidden data in</param>
+            <param name="collectGarbage">Do you want to Collect the Garbage or are you more worried about performance</param>
+            <returns>A Result as to whether the function was successful including the obj paramter after any changes that took place.</returns>
+            <remarks>The returned result may contain the object</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.UseContents``1(System.Security.SecureString,``0,System.Func{``0,System.String,WithUnity.Tools.Result{``0}},System.Boolean)">
+            <summary>
+            Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory.
+            The text is filled with NUL characters before releasing it and is by default garbage collected.
+            </summary>
+            <param name="securePassword">The hidden data</param>
+            <param name="parameter">An array of parameters that are used by the function</param>
+            <param name="func">The function you want to use the hidden data in</param>
+            <param name="collectGarbage">Do you want to Collect the Garbage or are you more worried about performance</param>
+            <returns>A Result as to whether the function was successful including the obj paramter after any changes that took place.</returns>
+            <remarks>The returned result may contain the object</remarks>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.UseContents(System.Security.SecureString,System.Func{System.String,WithUnity.Tools.Result},System.Boolean)">
+            <summary>
+            Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory.
+            The text is filled with NUL characters before releasing it and is by default garbage collected.
+            </summary>
+            <param name="securePassword">The hidden data</param>
+            <param name="func">The function you want to use the hidden data in</param>
+            <param name="collectGarbage">Do you want to Collect the Garbage or are you more worried about performance</param>
+            <returns>A Result as to whether the function was successful</returns>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.ConvertToUnsecureString(System.Security.SecureString)">
+            <summary>
+            Extracts the string hidden in the secure string.
+            Please note using this directly it is not advisable.
+            You need to be very careful of how you handle the revealed contents.
+            Please use one of the UseContents methods instead.
+            </summary>
+            <param name="securePassword"></param>
+            <returns>A valid MayBe&lt;string&gt;.Value containging of the contents of the SecureString 
+            or MayBe&lt;string&gt;.HasNoValue if securePassword is null</returns>
+            <remarks>To reduce visibility of the sensitive data in the SecureString
+            it is best to access this within fixed memory to ensure the sensitive
+            data remains in memory and does not get moved around in memory, 
+            leaving a trail of sensitive data images across memory or even worse gets
+            written to disk in a swap file or a memory dump. e.g.
+            
+            unsafe void method(SecureString ss)
+            {
+                string unsecureString;
+                fixed(char* = unsecureString = ss.ConvertToUnsecureString())
+                {
+                    ... 
+                    // do what you need to with unsecureString
+                    ...
+                    unsecureString.WipeString(); // WipeString clears the fixed memory with NUL.
+                }
+                // releases the nul filled string, lets garbage collection Collect it.
+                unsecureString = null; 
+                // Unfortunately the released string will always be the 
+                // same length as the sensitive data.
+                // You may want to collect the memory to remove even that information
+                GC.Collect();
+            }
+            
+            Unfortunately the only way to fix the memory is by assigning it to a pointer which is
+            intrinsically unsafe. However we never use the unsafe pointer only the fact that the
+            string is fixed in memory. This does force you to compile allowing the use of unsafe code.
+            It is never a good idea to leaving that compiler switch on for any large projects.
+            This is why UseContents is the prefered way of accessing the contents of a SecureString
+            It handles the memory management for you.
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">Could theoretically be thrown, if there is an issue with the code.</exception>
+            <exception cref="T:System.NotSupportedException">May be thrown if run against the wrong version of .NET.</exception>
+            <exception cref="T:System.OutOfMemoryException">If the password is huge: over half the available memory.</exception>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.GetStringSecurityHash(System.String)">
+            <summary>
+            Creates a SHA512 hash for the text
+            </summary>
+            <param name="text">The text to hash</param>
+            <returns>a 64 character hash hex encoded hash</returns>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.GetSecureStringSecurityHash(System.Security.SecureString)">
+            <summary>
+            SecureString.GetHashCode() returns the hash of the SecureString not the string contained in it.
+            So two SecureStrings with the same string held inside have different hascodes.
+            To get the same hashout for the same string in you need to extract the string and take the hash of that.
+            </summary>
+            <param name="securePassword">The SecureString to call  this on.</param>
+            <returns>The strings SHA512 hash</returns>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.MoveToSecureString(System.String)">
+            <summary>
+            Moves a string to a SecureString. It clears the memory of the string and leaves it blank.
+            </summary>
+            <param name="password"></param>
+            <returns>A SecureString containing the string</returns>
+            <exception cref="T:System.ArgumentNullException">Could theoretically be thrown.</exception>  
+            <exception cref="T:System.ArgumentOutOfRangeException">Could theoretically be thrown.</exception>  
+            <exception cref="T:System.Security.Cryptography.CryptographicException">Could theoretically be thrown.</exception>  
+            <exception cref="T:System.NotSupportedException">Could theoretically be thrown.</exception>  
+            <remarks>Side effect the incoming string is nulled.
+            If you want to minimise the risk of the old nulled string been spotted giving 
+            the length of the secret in a swap 
+            file or in a memory dump, assign a different value to the string.
+            and GC.Collect() to free up the string.
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.SecureStringExtensions.EqualContents(System.Security.SecureString,System.Security.SecureString,System.Boolean)">
+            <summary>
+            Verifies if two SecureStrings Contents are equal.
+            </summary>
+            <param name="ss1">The first Secure String</param>
+            <param name="ss2">The second Secure String to compare it against.</param>
+            <param name="collectMemory">For security reasons it is best to collect memory
+            to reduce the chance of leaving any password length information lying about in memory.
+            Default Value is true.</param>
+            <returns>true if the contents of the two SecureStrings are equal</returns>
+        </member>
+        <member name="T:WithUnity.Tools.ValueProperties.EmailAddress">
+            <summary>
+            A Value Property for validating email addresses.
+            </summary>
+            <remarks>
+                This is provided with minimal validataion for n EmailAddress. You may want to create your own variant with different validation.
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.#ctor(WithUnity.Tools.MayBe{System.String})">
+            <summary>
+            The Main constructor for an email address
+            </summary>
+            <param name="emailAddressValue"></param>
+            <exception cref="T:System.InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
+            <remarks>
+            This verifies:  
+                that the email is not <see langword="null"/>;
+                that email is at leaset 3 characters long;
+                that the email does not start with an @ sign;
+                that the email does not end with an @ sign;
+                that the email contains 1 and only 1 @ sign;
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.op_Implicit(System.String)~WithUnity.Tools.ValueProperties.EmailAddress">
+            <summary>
+            Implicit conversion for simpler readability to MayBe&lt;String&gt;
+            </summary>
+            <param name="possibleEmail"></param>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.op_Implicit(WithUnity.Tools.MayBe{System.String})~WithUnity.Tools.ValueProperties.EmailAddress">
+            <summary>
+            Implicit conversion from May&lt;Be&gt; string to be more explicit about whether the string is null.
+            </summary>
+            <param name="possibleEmail"></param>
+        </member>
+        <member name="P:WithUnity.Tools.ValueProperties.EmailAddress.EmailAddressValue">
+            <summary>
+            The Valid EmailAddress value
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.EqualsCore(System.String)">
+            <summary>
+            Not by the time this is called all checks for null and 
+            NoValue have akready been called so we just deal with the equality of valid objects.
+            </summary>
+            <param name="other"></param>
+            <returns>whether the two are equal</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.GetHashCode">
+            <summary>
+            ValueProperty inner GetHash routine
+            </summary>
+            <returns>an Integer hash of the  emailaddress class</returns>
+        </member>
+        <member name="T:WithUnity.Tools.ValueProperties.FileExtension">
+            <summary>
+            FileExtension ValueProperty
+            </summary>
+            <remarks>
+                This is provided with minimal validataion for a file extension. You may want to create your own variant with different validation.
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.#ctor(System.String)">
+            <summary>
+            The constructor for a file extension
+            </summary>
+            <param name="extension">The initial file extension primitive</param>
+            <exception cref="T:System.InvalidCastException">The message will contain any validation errors</exception>
+            <remarks>
+            It strips out any leading '*.'.
+            
+            It Verifies:
+                The File Extension is not blank or <see langword="null"/>';
+                The File extension does not contain '\', '/', ':' or '.'
+            </remarks>
+        </member>
+        <member name="T:WithUnity.Tools.ValueProperties.UnicodeCharacter16">
+            <summary>
+            A string representing one Unicode Character based on 1 or 2 16 bit Unicode code points
+            </summary>
+            <remarks>
+                This is provided with minimal validataion for a uunicode character. You may want to create your own variant with different validation.
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.UnicodeCharacter16.#ctor(WithUnity.Tools.MayBe{System.String})">
+            <summary>
+            Constructor for validating the unicode character
+            </summary>
+            <param name="input">Maybe a single Unicode Character in a string</param>
+            <exception cref="T:System.InvalidCastException">If the string is not a Unicode character</exception>
+            <exception cref="T:System.ArgumentNullException">If the string is null</exception>
+            <remarks>
+            This verifies:
+                That the string past in is a single Unicode Character;
+            Whether high and low surrogate code points are used in the correct order and 
+            
+            </remarks>
+            <exception cref="T:System.InvalidCastException">If the string is not a single Unicode character, Including a null string.</exception>
+        </member>
+        <member name="P:WithUnity.Tools.ValueProperties.UnicodeCharacter16.Utf32">
+            <summary>
+            Utf32 equivalent
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.ValueProperties.UnicodeCharacter16.Utf8">
+            <summary>
+            The UTF 8 equivalent.
+            </summary>
+        </member>
+        <member name="T:WithUnity.Tools.ValueProperties.UnicodeString16">
+            <summary>
+            A C# string representing a valid UTF-16 string
+            </summary>
+            <remarks>
+                This checks that all the code points in the string form valid unicode characters there are all valid Unicode characters.
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.UnicodeString16.#ctor(WithUnity.Tools.MayBe{System.String})">
+            <summary>
+            Constructor for validating the unicode string
+            </summary>
+            <param name="value"></param>
+            <exception cref="T:System.InvalidCastException">If the string is not a Unicode string</exception>
+            <exception cref="T:System.ArgumentNullException">If the string is null</exception>
+            <remarks>
+            This verifies:
+                That the string past in is a valid  Unicode string;
+            By checking if  high and low surrogate code points are used in the correct order and the single code points are used as single characters.
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.UnicodeString16.GetUnicodeCharacter(WithUnity.Tools.MayBe{System.String})">
+            <summary>
+            Goes through a string returning valid Unicode characters
+            </summary>
+            <param name="input">A MayBe&lt;string&gt; input string.</param>
+            <returns>The next valid Unicode Character</returns>
+            <exception cref="T:System.InvalidCastException">Is thrown if the string is invalid Unicode</exception>
+        </member>
+        <member name="P:WithUnity.Tools.ValueProperties.UnicodeString16.Utf32String">
+            <summary>
+            Provides Utf32 equivalent.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.ValueProperties.UnicodeString16.Utf8String">
+            <summary>
+            Provides Utf32 equivalent.
+            </summary>
+        </member>
+        <member name="T:WithUnity.Tools.ValueProperty`2">
+             <summary>
+             A ValueProperty is a ValueObject which has only one
+             Property.
+             
+             Like ValueObjects ValueProperties must be Immutable.
+             Hence their name.
+             
+             A ValueProperty contain a single object for example a string
+             with all the validation of that value
+             and Equals and GetHashCode methods.
+             
+            The reason a ValueProperty is different from a ValueObject
+            
+             Is that it adds implicit assignment between a value and the ValueProperty
+             and implicit assignment between a MayBe&lt;Value&gt; and the ValueProperty
+             
+             It also allows Comparisons between the held value and the native value or a MayBe&lt;value&gt;
+             
+             The code here give the standard base implementation of
+             a ValueProperty
+             
+             The various Equals and GetHashCode methods, while 
+             keeping to the DRY principal as best we can.
+             </summary>
+             <typeparam name="T">The Value Property type e.g. public sealed class EmailAddress : ValueProperty&lt;EmailAddress, string&gt;</typeparam>
+             <typeparam name="HeldType">The Type of the held value; for a EmailAddress that is a string</typeparam>
+        </member>
+        <member name="P:WithUnity.Tools.ValueProperty`2.Value">
+            <summary>
+            The underlying read only data. Maybe&lt;HeldType&gt; may be.
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.#ctor(`1)">
+            <summary>
+            A protected constructor.
+            It is not intended that this should be used directly
+            but always as an implicit cast.
+            </summary>
+            <param name="value">An instance of the underlying data. 
+            This is never expected to be null(Protected by NullGuard)</param>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.#ctor(WithUnity.Tools.MayBe{`1})">
+            <summary>
+            A protected constructor.
+            It is not intended that this should be used directly
+            but always as an implicit cast.
+            </summary>
+            <param name="value">A MayBe&lt;HeldType&gt; structure, which may contain an instance of the underlying data or null.</param>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.ToValueProperty(`1)">
+            <summary>
+            Explicit Conversion from HeldType to  ValueProperty&lt;T, HeldType>&gt;
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Implicit(`1)~WithUnity.Tools.ValueProperty{`0,`1}">
+            <summary>
+            Implicit cast from a HeldType instance to ValueProperty&lt;T, HeldType&gt;.
+            </summary>
+            <param name="value">The incoming value</param>
+            <returns>The implicitly cast ValueProperty(Must pass validation or throw an exception)</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.ToValueProperty(WithUnity.Tools.MayBe{`1})">
+            <summary>
+            Explicit Conversion from HeldType to  ValueProperty&lt;T, HeldType>&gt;
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Implicit(WithUnity.Tools.MayBe{`1})~WithUnity.Tools.ValueProperty{`0,`1}">
+            <summary>
+            Implicit cast from a MayBe&lt;HeldType&gt; to ValueProperty&lt;T, HeldType&gt;.
+            </summary>
+            <param name="value">The incoming value</param>
+            <returns>The implicitly cast ValueProperty(Must pass validation or throw an exception)</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.Equals(System.Object)">
+            <summary>
+            Returns true if equal or false if not equal
+            </summary>
+            <param name="obj">The object being compared</param>
+            <returns>Returns Whether the Value of the ValueProperty is equal to:
+            1. if the obj is HeldType the obj;
+            2. if the obj is a MayBe&lt;HeldType&gt; the Value of the MayBe&lt;HeldType&gt;;
+            3. if the obj is a a ValueProperty&lt;T, HeldType&gt; the Value of the ValueProperty&lt;T, HeldType&gt;
+            4. or false.</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.EqualsCore(`1)">
+            <summary>
+            This should be overrriden
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.GetHashCode">
+            <summary>
+            GetHashCode calls an overridden method to Get the Hash code based on the HeldType. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Equality(WithUnity.Tools.ValueProperty{`0,`1},WithUnity.Tools.ValueProperty{`0,`1})">
+            <summary>
+            == operator for ValueProperty&lt;T, HeldType&gt;
+            </summary>
+            <param name="a">a ValueProperty&lt;T, HeldType&gt;</param>
+            <param name="b">another ValueProperty&lt;T, HeldType&gt;</param>
+            <returns>true if the two Values are the same</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Inequality(WithUnity.Tools.ValueProperty{`0,`1},WithUnity.Tools.ValueProperty{`0,`1})">
+            <summary>
+            != operator for ValueProperty&lt;T, HeldType&gt;
+            </summary>
+            <param name="a">a ValueProperty&lt;T, HeldType&gt;</param>
+            <param name="b">another ValueProperty&lt;T, HeldType&gt;</param>
+            <returns>false if the two Values are the same</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Equality(WithUnity.Tools.ValueProperty{`0,`1},WithUnity.Tools.MayBe{`1})">
+            <summary>
+            == operator comparing the Value of a ValueProperty&lt;T, HeldType&gt; and the Value of a MayBe&lt;HeldType&gt;
+            </summary>
+            <param name="a">a ValueProperty&lt;T, HeldType&gt;</param>
+            <param name="b">a MayBe&lt;HeldTypey&gt; of the same type</param>
+            <returns>true if the HeldType Value for both are equal</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Inequality(WithUnity.Tools.ValueProperty{`0,`1},WithUnity.Tools.MayBe{`1})">
+            <summary>
+            == operator comparing the Value of a ValueProperty&lt;T, HeldType&gt; and the Value of a MayBe&lt;HeldType&gt;
+            </summary>
+            <param name="a">a ValueProperty&lt;T, HeldType&gt;</param>
+            <param name="b">a MayBe&lt;HeldTypey&gt; of the same type</param>
+            <returns>false if the HeldType Value for both are equal</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Equality(WithUnity.Tools.MayBe{`1},WithUnity.Tools.ValueProperty{`0,`1})">
+            <summary>
+            == operator comparing a MayBe&lt;HeldType&gt; and a ValueProperty&lt;T, HeldType&gt; 
+            </summary>
+            <param name="a">a MayBe&lt;HeldType&gt;</param>
+            <param name="b">a ValueProperty&lt;T, HeldType&gt;</param>
+            <returns>true if the HeldType Value for both are equal</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Inequality(WithUnity.Tools.MayBe{`1},WithUnity.Tools.ValueProperty{`0,`1})">
+            <summary>
+            != operator comparing a MayBe&lt;HeldType&gt; and a ValueProperty&lt;T, HeldType&gt; 
+            </summary>
+            <param name="a">a MayBe&lt;HeldType&gt;</param>
+            <param name="b">a ValueProperty&lt;T, HeldType&gt;</param>
+            <returns>false if the HeldType Value for both are equal</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Equality(WithUnity.Tools.ValueProperty{`0,`1},`1)">
+            <summary>
+            == operator comparing a ValueProperty&lt;T, HeldType&gt; and a HeldType
+            </summary>
+            <param name="a">a ValueProperty&lt;T, HeldType&gt;</param>
+            <param name="b">HeldType of the same type as the MayBe&lt;HeldType&gt;.Value</param>
+            <returns>true if the value of HeldType is e qual or both are null</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Inequality(WithUnity.Tools.ValueProperty{`0,`1},`1)">
+            <summary>
+            != operator comparing a ValueProperty&lt;T, HeldType&gt; and a HeldType
+            </summary>
+            <param name="a">a ValueProperty&lt;T, HeldType&gt;</param>
+            <param name="b">HeldType of the same type</param>
+            <returns>true if the calue of HeldType is e qual or both are null</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Equality(`1,WithUnity.Tools.ValueProperty{`0,`1})">
+            <summary>
+            == operator comparing a HeldType and a ValueProperty&lt;T, HeldType&gt;
+            </summary>
+            <param name="a">HeldType of the same type</param>
+            <param name="b">a ValueProperty&lt;T, HeldType&gt;</param>
+            <returns>true if the calue of HeldType is e qual or both are null</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperty`2.op_Inequality(`1,WithUnity.Tools.ValueProperty{`0,`1})">
+            <summary>
+            != operator comparing a HeldType and a ValueProperty&lt;T, HeldType&gt;
+            </summary>
+            <param name="a">HeldType of the same type</param>
+            <param name="b">a ValueProperty&lt;T, HeldType&gt;</param>
+            <returns>true if the calue of HeldType is e qual or both are null</returns>
+        </member>
+    </members>
+</doc>

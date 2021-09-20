@@ -91,7 +91,7 @@ namespace WithUnity.Tools
         /// Used as a Level ToString() to give strings the same length
         /// to keep the log alignment the same so that it is easier to read.
         /// </summary>
-        private readonly static IDictionary<Level, string> Levels = new Dictionary<Level, string>
+        public readonly static IDictionary<Level, string> LevelLabels = new Dictionary<Level, string>
         {
             { Level.Verbose,      "Verbose" },
             { Level.Debug,        "Debug  " },
@@ -104,7 +104,15 @@ namespace WithUnity.Tools
 
         private static bool TimeOffset { get; set; }
 
-        private static string AssemblyName { get; set; }
+        /// <summary>
+        /// The Entry AssemblyName
+        /// </summary>
+        public static string EntryAssemblyName { get; private set; }
+
+        /// <summary>
+        /// The File name used when logging to a file.
+        /// </summary>
+        public static string LogFileName { get; private set; }
 
         private static Level LoggingLevel { get; set; }
 
@@ -115,11 +123,22 @@ namespace WithUnity.Tools
 
         private static StreamWriter FileStream;
 
-        private static void WriteToFile(string text)
+         private static void WriteToFile(string text)
         {
-            FileStream.WriteLine(text + "\r\n");
+            AssemblyLock.WaitOne();
+            FileStream = new StreamWriter(LogFileName, append: true);
+            FileStream.WriteLine(text);
             FileStream.Flush();
+            FileStream.Close();
+            AssemblyLock.ReleaseMutex();
         }
+
+        /// <summary>
+        /// A lock for creating and individual locks for specific assemblies.
+        /// </summary>
+        private static Mutex LockOfLocks { get; set; } = new Mutex(initiallyOwned: false, "WithUnity.Tools.564B132A-BCA8-4775-92D8-A835BA13D514");
+
+        private static Mutex AssemblyLock { get; set; }
 
         /// <summary>
         /// Contains the list of sinks to the default methods used to implement them
@@ -141,16 +160,25 @@ namespace WithUnity.Tools
         /// </summary>
         /// <param name="level">The minimum level of logging to record. (Verbose &lt; Debug &lt; Information &lt; Warning &lt; Error &lt; UnkownState)</param>
         /// <param name="sinks">An array of sinks you want to use</param>
-        /// <param name="timeOffset"></param>
+        /// <param name="timeOffset">Report the time offset in the log.</param>
         /// <param name="utc"><see langword="true"/> logs things against UTC time <see langword="false"/> logs against local system time.</param>
-        public static void Initialise(Level level, Sink[] sinks, bool timeOffset, bool utc = true)
+        /// <param name="logFileName">Optional file name when logging to a file, the default is %TEMP%\%ApplicationAssemblyName%.log</param>
+        public static void Initialise(Level level, Sink[] sinks, bool timeOffset = false, bool utc = true, string logFileName = null)
         {
             if (level == 0)
                 level = Level.UnknownState;
             LoggingLevel = level;
             TimeOffset = timeOffset;
             Utc = utc;
-            AssemblyName = Assembly.GetCallingAssembly().GetName().Name;
+            EntryAssemblyName = Assembly.GetEntryAssembly().GetName().Name;
+            if (logFileName == null)
+            {
+                LogFileName = $"{Path.Join(Environment.GetEnvironmentVariable("TEMP"),EntryAssemblyName)}.log";
+            }
+            else
+            {
+                LogFileName = logFileName;
+            }
             Outputs.Clear();
             foreach (var sink in sinks)
             {
@@ -158,7 +186,26 @@ namespace WithUnity.Tools
             }
             if (sinks.Contains(Sink.File))
             {
-                FileStream = new StreamWriter($"{Environment.GetEnvironmentVariable("TEMP")}/{AssemblyName}.log");
+                // Check if the Mutex Already exists
+                if (AssemblyLock == null)
+                {
+                    LockOfLocks.WaitOne();
+                    try
+                    {
+                        AssemblyLock = Mutex.OpenExisting(EntryAssemblyName);
+                    }
+                    catch
+                    {
+                        // If exception occurred, there is no such mutex.
+                        AssemblyLock = new Mutex(initiallyOwned: false, EntryAssemblyName);
+                    }
+                    LockOfLocks.ReleaseMutex();
+                }
+                AssemblyLock.WaitOne();
+                FileStream = new StreamWriter(LogFileName, append: true);
+                FileStream.Flush();
+                FileStream.Close();
+                AssemblyLock.ReleaseMutex();
             }
             Initialised = true;
         }
@@ -169,7 +216,8 @@ namespace WithUnity.Tools
             LoggingLevel = Level.Warning;
             TimeOffset = false;
             Utc = true;
-            AssemblyName = Assembly.GetCallingAssembly().GetName().Name;
+            EntryAssemblyName = Assembly.GetEntryAssembly().GetName().Name;
+            LogFileName = $"{Environment.GetEnvironmentVariable("TEMP")}/{EntryAssemblyName}.log";
             Outputs.Clear();
             Outputs.Add(Sink.Console, DefaultOutputs[Sink.Console]);
             Outputs.Add(Sink.Debug, DefaultOutputs[Sink.Debug]);
@@ -218,7 +266,7 @@ namespace WithUnity.Tools
                 }
             }
 
-            prefix = $"{prefix}: {AssemblyName}: {Process.GetCurrentProcess().Id}: {Thread.CurrentThread.ManagedThreadId}: {Levels[level]}: ";
+            prefix = $"{prefix}: {EntryAssemblyName}: {Process.GetCurrentProcess().Id}: {Thread.CurrentThread.ManagedThreadId}: {LevelLabels[level]}: ";
             return prefix;
 
         }
@@ -240,9 +288,9 @@ namespace WithUnity.Tools
         }
 
         /// <summary>
-        /// The base logging writing some text to the log
+        /// The base logging used by all variants Error, Warniung etc.
         /// </summary>
-        private static void BaseLogging(Level level, string text)
+        public static void LevelLog(Level level, string text)
         {
             DefaultInitialise();
             if (LoggingLevel <= level)
@@ -251,14 +299,14 @@ namespace WithUnity.Tools
                 int offset = prefix.Length + 1;
                 string padding = new string(' ', offset);
                 text = text.Replace("\r\n", "\r\n" + padding).Trim();
-                WriteToLogs(level, $"{SetLogPrefixText(level)}{text}");
+                WriteToLogs(level, $"{prefix}{text}");
             }
         }
 
         /// <summary>
         /// The basic Logging for exception Logs the exception and all inner exceptions
         /// </summary>
-        private static void BaseLogging(Level level, Exception exception)
+        public static void LevelLog(Level level, Exception exception)
         {
             StringBuilder sb = new StringBuilder();
             while (exception != null)
@@ -271,15 +319,15 @@ namespace WithUnity.Tools
                 exception = exception.InnerException;
             }
             string output = sb.ToString();
-            BaseLogging(level, output);
+            LevelLog(level, output);
         }
 
         /// <summary>
         /// BaseLogging with a format string and an array of parameters
         /// </summary>
-        private static void BaseLogging(Level level, string Format, object[] parameters)
+        public static void LevelLog(Level level, string Format, object[] parameters)
         {
-            BaseLogging(level, string.Format(CultureInfo.InvariantCulture, Format, parameters));
+            LevelLog(level, string.Format(CultureInfo.InvariantCulture, Format, parameters));
         }
 
         /// <summary>
@@ -288,7 +336,7 @@ namespace WithUnity.Tools
         /// <param name="text">The text to log</param>
         public static void Warning(string text)
         {
-            BaseLogging(Level.Warning, text);
+            LevelLog(Level.Warning, text);
         }
 
         /// <summary>
@@ -297,7 +345,7 @@ namespace WithUnity.Tools
         /// <param name="exception">The exception to log</param>
         public static void Warning(Exception exception)
         {
-            BaseLogging(Level.Warning, exception);
+            LevelLog(Level.Warning, exception);
         }
 
         /// <summary>
@@ -307,7 +355,7 @@ namespace WithUnity.Tools
         /// <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
         public static void Warning(string format, object[] parameters)
         {
-            BaseLogging(Level.Warning, format, parameters);
+            LevelLog(Level.Warning, format, parameters);
         }
 
         /// <summary>
@@ -315,7 +363,7 @@ namespace WithUnity.Tools
         /// </summary>
         public static void VerboseOk()
         {
-            BaseLogging(Level.Verbose, "OK");
+            LevelLog(Level.Verbose, "OK");
         }
 
 
@@ -325,7 +373,7 @@ namespace WithUnity.Tools
         /// <param name="text">The text to log</param>
         public static void Verbose(string text)
         {
-            BaseLogging(Level.Verbose, text);
+            LevelLog(Level.Verbose, text);
         }
 
         /// <summary>
@@ -334,7 +382,7 @@ namespace WithUnity.Tools
         /// <param name="exception">The exception to log</param>
         public static void Verbose(Exception exception)
         {
-            BaseLogging(Level.Verbose, exception);
+            LevelLog(Level.Verbose, exception);
         }
 
         /// <summary>
@@ -344,7 +392,7 @@ namespace WithUnity.Tools
         /// <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
         public static void Verbose(string format, object[] parameters)
         {
-            BaseLogging(Level.Verbose, format, parameters);
+            LevelLog(Level.Verbose, format, parameters);
         }
 
         /// <summary>
@@ -353,7 +401,7 @@ namespace WithUnity.Tools
         /// <param name="text">The text to log</param>
         public static void Information(string text)
         {
-            BaseLogging(Level.Information, text);
+            LevelLog(Level.Information, text);
         }
 
         /// <summary>
@@ -362,7 +410,7 @@ namespace WithUnity.Tools
         /// <param name="exception">The exception to log</param>
         public static void Information(Exception exception)
         {
-            BaseLogging(Level.Information, exception);
+            LevelLog(Level.Information, exception);
         }
 
         /// <summary>
@@ -372,7 +420,7 @@ namespace WithUnity.Tools
         /// <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
         public static void Information(string format, object[] parameters)
         {
-            BaseLogging(Level.Information, format, parameters);
+            LevelLog(Level.Information, format, parameters);
         }
 
         /// <summary>
@@ -381,7 +429,7 @@ namespace WithUnity.Tools
         /// <param name="text">The text to log</param>
         public static void Debug(string text)
         {
-            BaseLogging(Level.Debug, text);
+            LevelLog(Level.Debug, text);
         }
 
         /// <summary>
@@ -390,7 +438,7 @@ namespace WithUnity.Tools
         /// <param name="exception">The exception to log</param>
         public static void Debug(Exception exception)
         {
-            BaseLogging(Level.Debug, exception);
+            LevelLog(Level.Debug, exception);
         }
 
         /// <summary>
@@ -400,7 +448,7 @@ namespace WithUnity.Tools
         /// <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
         public static void Debug(string format, object[] parameters)
         {
-            BaseLogging(Level.Debug, format, parameters);
+            LevelLog(Level.Debug, format, parameters);
         }
 
         /// <summary>
@@ -409,7 +457,7 @@ namespace WithUnity.Tools
         /// <param name="text">The text to log</param>
         public static void Error(string text)
         {
-            BaseLogging(Level.Error, text);
+            LevelLog(Level.Error, text);
         }
 
         /// <summary>
@@ -418,7 +466,7 @@ namespace WithUnity.Tools
         /// <param name="exception">The exception to log</param>
         public static void Error(Exception exception)
         {
-            BaseLogging(Level.Error, exception);
+            LevelLog(Level.Error, exception);
         }
 
         /// <summary>
@@ -428,16 +476,16 @@ namespace WithUnity.Tools
         /// <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
         public static void Error(string format, object[] parameters)
         {
-            BaseLogging(Level.Error, format, parameters);
+            LevelLog(Level.Error, format, parameters);
         }
 
         /// <summary>
         /// Log an UnkownState message
         /// </summary>
         /// <param name="text">The text to log</param>
-        public static void UnknownState(string text)
+       public static void UnknownState(string text)
         {
-            BaseLogging(Level.UnknownState, text);
+            LevelLog(Level.UnknownState, text);
         }
 
         /// <summary>
@@ -446,7 +494,7 @@ namespace WithUnity.Tools
         /// <param name="exception">The exception to log</param>
         public static void UnknownState(Exception exception)
         {
-            BaseLogging(Level.UnknownState, exception);
+            LevelLog(Level.UnknownState, exception);
         }
 
         /// <summary>
@@ -456,20 +504,7 @@ namespace WithUnity.Tools
         /// <param name="parameters">The parameters to pass to string.Format(format, parameters)</param>
         public static void UnknownState(string format, object[] parameters)
         {
-            BaseLogging(Level.UnknownState, format, parameters);
+            LevelLog(Level.UnknownState, format, parameters);
         }
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="method"></param>
-        ///// <returns></returns>
-        //public IEnumerable<IAdvice> Advise(MethodBase method)
-        //{
-        //    yield return Advice.Basic.Before((instance, arguments) =>
-        //    {
-        //        Console.Writeline(instance, arguments);
-        //    });
-        //}
     }
 }

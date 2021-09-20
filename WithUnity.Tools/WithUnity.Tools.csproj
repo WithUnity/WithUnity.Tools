@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-  </PropertyGroup>
-  <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <PackageId>WithUnity.Tools</PackageId>
     <Version>1.0.2-alpha</Version>
@@ -75,5 +73,4 @@ The Logging and the Reflexive tools are independent of using the Result validati
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="PxtlCa.XmlCommentMarkDownGenerator.exe -i &quot;$(TargetDir)\WithUnity.Tools.xml&quot; -o  &quot;$(SolutionDir)WithUnity.Tools.md&quot;" />
   </Target>
-
 </Project>

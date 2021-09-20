@@ -34,11 +34,11 @@ namespace WithUnity.Tools.ValueProperties
         public EmailAddress(MayBe<string> emailAddressValue) : base(emailAddressValue)
         {
             Result<string> result = (emailAddressValue.HasValue ? Result.Ok<string>(emailAddressValue.Value) : Result.Fail<string>("Null email Address"))
-                .Ensure(ema => ema.Split('@').Length != 2, @"There are {ema.Split('@').Length - 1} one @ sign")
                 .OnSuccess<string>(ema => ema.Trim())
                 .Ensure(ema => 3 <= ema.Length, "The email address is too short")
                 .Ensure(ema => 0 < ema.IndexOf("@", StringComparison.InvariantCulture), "No preceding name before @ sign in EmailAddress")
                 .Ensure(ema => ema.IndexOf("@", StringComparison.InvariantCulture) != (ema.Length - 1), "No domain name after @ sign in EmailAddress")
+                .Ensure(ema => ema.Split('@').Length == 2, @"There are {ema.Split('@').Length - 1} one @ sign")
                 .OnFailure(error => { throw new InvalidCastException(error); });
         }
 

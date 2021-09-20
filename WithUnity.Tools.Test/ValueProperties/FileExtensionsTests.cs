@@ -1,4 +1,4 @@
-﻿/* Copyright 2015-2020 Robin Murison
+/* Copyright 2015-2020 Robin Murison
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -79,27 +79,13 @@ namespace WithUnity.Tools.Tests
             }
         }
 
-        [TestCase("Jpeg")]
-        [TestCase("jPeg")]
-        public void TestOuputIsLowerCase(string validExtension)
-        {
-            // Arrange
-            string expected = validExtension.ToUpperInvariant();
-
-            //Action
-            FileExtension fileExtension = new FileExtension(validExtension);
-
-            // Asserts
-            Assert.AreEqual(fileExtension.Value.Value, expected);
-        }
-
         [TestCase("*.Jpeg")]
         [TestCase("*.jPeg")]
         [TestCase("*.bmp")]
         public void TestOuputExcludesAsteriskDot(string validExtension)
         {
             // Arrange
-            string expected = validExtension.ToUpperInvariant().Substring(2);
+            string expected = validExtension.Substring(2);
 
             //Action
             FileExtension fileExtension = new FileExtension(validExtension);
@@ -114,7 +100,7 @@ namespace WithUnity.Tools.Tests
         public void TestExtensionsMustNotContainFullStops(string invalidExtension)
         {
             // Arrange
-            string expected = invalidExtension.ToUpperInvariant().Substring(2);
+            string expected = invalidExtension.Substring(2);
             FileExtension fileExtension = null;
             try
             {
@@ -130,15 +116,5 @@ namespace WithUnity.Tools.Tests
                 Assert.IsTrue(ex.Message.Contains("The extension should not contain full stops."));
             }
         }
-
-        //[Test]
-        //public static void TestTemplate()
-        //{
-        //    // Arrange
-
-        //    // Act
-
-        //    // Asserts
-        //}
     }
 }

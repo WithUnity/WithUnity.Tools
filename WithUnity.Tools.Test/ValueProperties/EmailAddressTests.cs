@@ -35,7 +35,7 @@ namespace WithUnity.Tools.Tests
             catch (Exception ex)
             {
                 // Asserts
-                Assert.Fail($"Wrong type of Exception thrown : {ex.GetType().Name}.");
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
             }
         }
 
@@ -61,7 +61,7 @@ namespace WithUnity.Tools.Tests
             catch (Exception ex)
             {
                 // Asserts
-                Assert.Fail($"Wrong type of Exception thrown : {ex.GetType().Name}.");
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
             }
         }
 
@@ -92,7 +92,7 @@ namespace WithUnity.Tools.Tests
             catch (Exception ex)
             {
                 // Asserts
-                Assert.Fail($"Wrong type of Exception thrown : {ex.GetType().Name}.");
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
             }
         }
 
@@ -116,7 +116,7 @@ namespace WithUnity.Tools.Tests
             catch (Exception ex)
             {
                 // Asserts
-                Assert.Fail($"Wrong type of Exception thrown : {ex.GetType().Name}.");
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
             }
         }
 
@@ -140,7 +140,7 @@ namespace WithUnity.Tools.Tests
             catch (Exception ex)
             {
                 // Asserts
-                Assert.Fail($"Wrong type of Exception thrown : {ex.GetType().Name}.");
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
             }
         }
 
