@@ -28,9 +28,9 @@ namespace WithUnity.Tools.Tests
                 // Asserts
                 Assert.Fail("email address without @ accepted.");
             }
-            catch (InvalidCastException )
+            catch (InvalidCastException)
             {
-                // Asserts
+                // Test passed
             }
             catch (Exception ex)
             {
@@ -58,6 +58,11 @@ namespace WithUnity.Tools.Tests
                 // Asserts
                 Assert.IsTrue(ex.Message.Contains("Null email Address"));
             }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
+            }
         }
 
         [TestCase(" ")]
@@ -84,6 +89,11 @@ namespace WithUnity.Tools.Tests
             {
                 // Various errprs can be returned so unsure which one
             }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
+            }
         }
 
         [TestCase("@a.com")]
@@ -103,6 +113,11 @@ namespace WithUnity.Tools.Tests
                 // Asserts
                 Assert.IsTrue(ex.Message.Contains("No preceding name before @ sign in EmailAddress"));
             }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
+            }
         }
 
         [TestCase("ape@")]
@@ -121,6 +136,11 @@ namespace WithUnity.Tools.Tests
             {
                 // Asserts
                 Assert.IsTrue(ex.Message.Contains("No domain name after @ sign in EmailAddress"));
+            }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
             }
         }
 
