@@ -88,9 +88,30 @@
 
 
 ---
-#### Field Log.Levels
+#### Field Log.LevelLabels
 
  Used as a Level ToString() to give strings the same length to keep the log alignment the same so that it is easier to read. 
+
+
+
+---
+#### Property Log.EntryAssemblyName
+
+ The Entry AssemblyName 
+
+
+
+---
+#### Property Log.LogFileName
+
+ The File name used when logging to a file. 
+
+
+
+---
+#### Property Log.LockOfLocks
+
+ A lock for creating and individual locks for specific assemblies. 
 
 
 
@@ -109,7 +130,7 @@
 
 
 ---
-#### Method Log.Initialise(WithUnity.Tools.Log.Level,WithUnity.Tools.Log.Sink[],System.Boolean,System.Boolean)
+#### Method Log.Initialise(WithUnity.Tools.Log.Level,WithUnity.Tools.Log.Sink[],System.Boolean,System.Boolean,System.String)
 
  Initializas the log 
 
@@ -117,8 +138,9 @@
 |-----|------|
 |level: |The minimum level of logging to record. (Verbose < Debug < Information < Warning < Error < UnkownState)|
 |sinks: |An array of sinks you want to use|
-|timeOffset: ||
+|timeOffset: |Report the time offset in the log.|
 |utc: |[[|]] logs things against UTC time [[|]] logs against local system time.|
+|logFileName: |Optional file name when logging to a file, the default is %TEMP%\%ApplicationAssemblyName%.log|
 
 
 ---
@@ -155,21 +177,21 @@
 
 
 ---
-#### Method Log.BaseLogging(WithUnity.Tools.Log.Level,System.String)
+#### Method Log.LevelLog(WithUnity.Tools.Log.Level,System.String)
 
- The base logging writing some text to the log 
+ The base logging used by all variants Error, Warniung etc. 
 
 
 
 ---
-#### Method Log.BaseLogging(WithUnity.Tools.Log.Level,System.Exception)
+#### Method Log.LevelLog(WithUnity.Tools.Log.Level,System.Exception)
 
  The basic Logging for exception Logs the exception and all inner exceptions 
 
 
 
 ---
-#### Method Log.BaseLogging(WithUnity.Tools.Log.Level,System.String,System.Object[])
+#### Method Log.LevelLog(WithUnity.Tools.Log.Level,System.String,System.Object[])
 
  BaseLogging with a format string and an array of parameters 
 
