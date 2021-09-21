@@ -1575,13 +1575,168 @@
 
 
 ---
+## Type SecureStringExtensions
+
+ SecureString extension methods and related string extension methods 
+
+
+
+---
+#### Method SecureStringExtensions.WipeString(System.String)
+
+ Wipes the memory of an insecure string setting the characters to 0. Users should set the length to 0 after a call to WipeString to better hide the previous values length assign a new value to the immutable reference and allow GC to dispose the nulled strigns. See examples of use below. 
+
+|Name | Description |
+|-----|------|
+|insecurePassword: |a plain text string that needs to be wiped clean before being released back to general memory|
+**Returns**: 
+
+
+
+---
+#### Method SecureStringExtensions.UseContents(System.Security.SecureString,System.Object[],System.Func{System.Object[],System.String,WithUnity.Tools.Result},System.Boolean)
+
+ Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory. The text is filled with NUL characters before releasing it and is by default garbage collected. 
+
+|Name | Description |
+|-----|------|
+|securePassword: |The hidden data|
+|parameters: |An array of parameters that are used by the function|
+|func: |The function you want to use the hidden data in|
+|collectGarbage: |Do you want to Collect the Garbage or are you more worried about performance|
+**Returns**: A Result as to whether the function was successful including the obj paramter after any changes that took place.
+
+
+
+>The returned result may contain the object
+
+
+
+---
+#### Method SecureStringExtensions.UseContents``1(System.Security.SecureString,``0,System.Func{``0,System.String,WithUnity.Tools.Result{``0}},System.Boolean)
+
+ Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory. The text is filled with NUL characters before releasing it and is by default garbage collected. 
+
+|Name | Description |
+|-----|------|
+|securePassword: |The hidden data|
+|parameter: |An array of parameters that are used by the function|
+|func: |The function you want to use the hidden data in|
+|collectGarbage: |Do you want to Collect the Garbage or are you more worried about performance|
+**Returns**: A Result as to whether the function was successful including the obj paramter after any changes that took place.
+
+
+
+>The returned result may contain the object
+
+
+
+---
+#### Method SecureStringExtensions.UseContents(System.Security.SecureString,System.Func{System.String,WithUnity.Tools.Result},System.Boolean)
+
+ Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory. The text is filled with NUL characters before releasing it and is by default garbage collected. 
+
+|Name | Description |
+|-----|------|
+|securePassword: |The hidden data|
+|func: |The function you want to use the hidden data in|
+|collectGarbage: |Do you want to Collect the Garbage or are you more worried about performance|
+**Returns**: A Result as to whether the function was successful
+
+
+
+---
+#### Method SecureStringExtensions.ConvertToUnsecureString(System.Security.SecureString)
+
+ Extracts the string hidden in the secure string. Please note using this directly it is not advisable. You need to be very careful of how you handle the revealed contents. Please use one of the UseContents methods instead. 
+
+|Name | Description |
+|-----|------|
+|securePassword: ||
+**Returns**: A valid MayBe<string>.Value containging of the contents of the SecureString or MayBe<string>.HasNoValue if securePassword is null
+
+
+
+>To reduce visibility of the sensitive data in the SecureString it is best to access this within fixed memory to ensure the sensitive data remains in memory and does not get moved around in memory, leaving a trail of sensitive data images across memory or even worse gets written to disk in a swap file or a memory dump. e.g. unsafe void method(SecureString ss) { string unsecureString; fixed(char* = unsecureString = ss.ConvertToUnsecureString()) { ... // do what you need to with unsecureString ... unsecureString.WipeString(); // WipeString clears the fixed memory with NUL. } // releases the nul filled string, lets garbage collection Collect it. unsecureString = null; // Unfortunately the released string will always be the // same length as the sensitive data. // You may want to collect the memory to remove even that information GC.Collect(); } Unfortunately the only way to fix the memory is by assigning it to a pointer which is intrinsically unsafe. However we never use the unsafe pointer only the fact that the string is fixed in memory. This does force you to compile allowing the use of unsafe code. It is never a good idea to leaving that compiler switch on for any large projects. This is why UseContents is the prefered way of accessing the contents of a SecureString It handles the memory management for you. 
+
+[[T:System.ArgumentNullException|T:System.ArgumentNullException]]: Could theoretically be thrown, if there is an issue with the code.
+
+[[T:System.NotSupportedException|T:System.NotSupportedException]]: May be thrown if run against the wrong version of .NET.
+
+[[T:System.OutOfMemoryException|T:System.OutOfMemoryException]]: If the password is huge: over half the available memory.
+
+
+
+---
+#### Method SecureStringExtensions.GetStringSecurityHash(System.String)
+
+ Creates a SHA512 hash for the text 
+
+|Name | Description |
+|-----|------|
+|text: |The text to hash|
+**Returns**: a 64 character hash hex encoded hash
+
+
+
+---
+#### Method SecureStringExtensions.GetSecureStringSecurityHash(System.Security.SecureString)
+
+ SecureString.GetHashCode() returns the hash of the SecureString not the string contained in it. So two SecureStrings with the same string held inside have different hascodes. To get the same hashout for the same string in you need to extract the string and take the hash of that. 
+
+|Name | Description |
+|-----|------|
+|securePassword: |The SecureString to call this on.|
+**Returns**: The strings SHA512 hash
+
+
+
+---
+#### Method SecureStringExtensions.MoveToSecureString(System.String)
+
+ Moves a string to a SecureString. It clears the memory of the string and leaves it blank. 
+
+|Name | Description |
+|-----|------|
+|password: ||
+**Returns**: A SecureString containing the string
+
+[[T:System.ArgumentNullException|T:System.ArgumentNullException]]: Could theoretically be thrown.
+
+[[T:System.ArgumentOutOfRangeException|T:System.ArgumentOutOfRangeException]]: Could theoretically be thrown.
+
+[[T:System.Security.Cryptography.CryptographicException|T:System.Security.Cryptography.CryptographicException]]: Could theoretically be thrown.
+
+[[T:System.NotSupportedException|T:System.NotSupportedException]]: Could theoretically be thrown.
+
+
+
+>Side effect the incoming string is nulled. If you want to minimise the risk of the old nulled string been spotted giving the length of the secret in a swap file or in a memory dump, assign a different value to the string. and GC.Collect() to free up the string. 
+
+
+
+---
+#### Method SecureStringExtensions.EqualContents(System.Security.SecureString,System.Security.SecureString,System.Boolean)
+
+ Verifies if two SecureStrings Contents are equal. 
+
+|Name | Description |
+|-----|------|
+|ss1: |The first Secure String|
+|ss2: |The second Secure String to compare it against.|
+|collectMemory: |For security reasons it is best to collect memory to reduce the chance of leaving any password length information lying about in memory. Default Value is true.|
+**Returns**: true if the contents of the two SecureStrings are equal
+
+
+
+---
 ## Type ValueProperties.EmailAddress
 
  A Value Property for validating email addresses. 
 
 
 
-> This is provided with minimal validataion for an EmailAddress. You may want to create your own variant with different validation. 
+> This is provided with minimal validataion for n EmailAddress. You may want to create your own variant with different validation. 
 
 
 
@@ -1631,7 +1786,7 @@
 ---
 #### Method ValueProperties.EmailAddress.EqualsCore(System.String)
 
- Note: by the time this is called all checks for null and NoValue have already been called so we just deal with the equality of valid objects. 
+ Not by the time this is called all checks for null and NoValue have akready been called so we just deal with the equality of valid objects. 
 
 |Name | Description |
 |-----|------|

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0"?>
+<package  xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>    
+    <id>WithUnity.Tools</id>
+    <version>1.0.2-alpha</version>
+    <title>With Unity Tools</title>
+    <authors>Robin Murison</authors>
+    <owners>Robin Murison</owners>
+    <licenseUrl>https://withunity.org/Tools/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/WithUnity/WithUnity.Tools/projects/1</projectUrl>
+    <iconUrl>https://withunity.org/Tools/Icon/WithUnity.Toolsx64.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <includeSymbols>true</includeSymbols>
+    <symbolPackageFormat>snupkg</symbolPackageFormat>
+    <description>
+      WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
+      We intend to add Task templates to provide appropriate parallel processing. Although C# Tasks are fine for the job Using of the templates would allow cross cutting coincerns to be 
+      implemented seamlessly.
+
+      The two main features to make method declaration more honest. Use the MayBe structure when there is an expectation that null maybe a valid reference as a parameter.
+      WHen there is a possibility that a method may fail, use the Result&lt;T&gt; classe to return either the valid object or the relevant error message.
+      The backlog has a mission to add the option to use error codes to allow localized of error messages, where these messages need to be publically displayed.
+
+      There is also a Log class that can be initialized to provide automatic logging from the Result class. With Verbose successes and Error level failures failures and informational notes.
+
+      There is also the ValueProperty to create readonly properties. Used to add validation to individual properties and to make using the ValueProperty class transparent to the user.
+
+      There are also a few implementation of a ValueProperty showing how to validation should be implemeted in the constructor and should throw InvalidCastException when invalid data is passed in.
+
+      ValueProperty can be implicitly used as the underlying type, this is to make them just as usable as the underlying data type.
+
+      Result uses some Reflexive tools to log from where errors occur in the Logging.
+      The Logging and the Reflexive tools are independent of using the Result validation mechanism.
+    </description>
+    <releaseNotes>
+      The 1.0.2-alpha release has added a Summary to the nuget package and has added the automatically generated WithUnity.Tools.MD to document the Tools
+    </releaseNotes>
+    <copyright>Copyright 2015-2021 Robin Murison. Under MIT License</copyright>
+    <tags>Fluent Result MayBe Logging</tags>
+    <dependencies>
+      <dependency id="NullGuard.Fody" />
+    </dependencies>
+    <summary>
+      WithUnity.Tools Provides The Result class to allow fluent Validation.
+      The MayBe struct to make optional object parameters more evident and to cause ArgumentNullException to be thrown only if it is not used and the parameter is null.
+      It also allows logging to be added to the Validation.
+
+      There is also the ValueProperty to create readonly properties. Used to add validation to individual properties and throw InvalidCastException if the data is not valid.
+      Using the ValueProperty class is transparent to the user as implicit casts to and from the ValueProperty are provided.
+
+      There are also a few common uses of a ValueProperty FileExtension EmailAddress, Unicode16 string.
+
+      Result uses some Reflexive tools to log from where errors occur in the Logging.
+      The Logging and the Reflexive tools are independent of the Result validation mechanism and can be used without using Result fluent validation.
+    </summary>
+    <includeSymbols>true</includeSymbols>
+    <symbolPackageFormat>snupkg</symbolPackageFormat>
+  </metadata>
+  <files>
+    <file src="WithUnity.Tools.1.0.2-alpha.nupkg" target="net5.0" />
+    <file src="..\readme.md" target="docs\" />
+    <file src="..\AbridgedWithUnity.Tools.md" target="docs\" />
+    <file src="..\Security.md" target="docs\" />
+  </files>
+</package>
