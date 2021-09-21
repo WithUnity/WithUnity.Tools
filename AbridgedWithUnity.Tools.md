@@ -1,4 +1,15 @@
-﻿/* Copyright 2015-2020 Robin Murison
+# WithUnity.Tools
+WithUnity.Tools Provides:
+1. The Result class to allow fluent Validation.
+2. The MayBe struct is used in conjunction with Fody.NullGuard to make optional object parameters more evident and to ensure ArgumentNullException is thrown if the MayBe struct is not used.
+3. Logging of the validation results if desired using the Log class.
+4. The ValueProperty class to create readonly properties. Adding validation to individual properties and throw InvalidCastException if the data is not valid. The ValueProperty class can be made transparent to the user as implicit casts to and from the ValueProperty can be provided.
+5. A few common uses of ValueProperty classes FileExtension EmailAddress, Unicode16 string. Using these ValueProperty classes is transparent to the user as implicit casts to and from the ValueProperty and the HeldType have been provided. 
+6. Result uses the ReflectiveTools class to determine where errors occur in the code. The Log class and the ReflectiveTools class can be used independently.
+---
+## Example usage of Result, Maybe and a ValueProperty implementation.
+```
+/* Copyright 2015-2020 Robin Murison
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -92,3 +103,6 @@ namespace WithUnity.Tools.ValueProperties
         }
     }
 }
+
+```
+---

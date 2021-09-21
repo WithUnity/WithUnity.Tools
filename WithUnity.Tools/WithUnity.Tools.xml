@@ -11,18 +11,20 @@
         </member>
         <member name="T:WithUnity.Tools.Log.Level">
             <summary>
-            The level of requested logging
-            Both for reading and writing logs.
+            Enum designating The level of logging requested and written
+            Used Both for reading and writing logs.
             </summary>
         </member>
         <member name="F:WithUnity.Tools.Log.Level.Verbose">
             <summary>
-            All logging
+            Write logging that is only shown if Verbose logging is turned on for reading.
+            Read: Read all logging regardless of Level written.
             </summary>
         </member>
         <member name="F:WithUnity.Tools.Log.Level.Debug">
             <summary>
-            Debugging logs
+            Write logging while debugging software.
+            Read: Reads all logging regardless of Level written.
             </summary>
         </member>
         <member name="F:WithUnity.Tools.Log.Level.Information">
@@ -70,10 +72,25 @@
             To a Log file in the %TEMP% directory using the calling assembly's name + ".log"
             </summary>
         </member>
-        <member name="F:WithUnity.Tools.Log.Levels">
+        <member name="F:WithUnity.Tools.Log.LevelLabels">
             <summary>
             Used as a Level ToString() to give strings the same length
             to keep the log alignment the same so that it is easier to read.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Log.EntryAssemblyName">
+            <summary>
+            The Entry AssemblyName
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Log.LogFileName">
+            <summary>
+            The File name used when logging to a file.
+            </summary>
+        </member>
+        <member name="P:WithUnity.Tools.Log.LockOfLocks">
+            <summary>
+            A lock for creating and individual locks for specific assemblies.
             </summary>
         </member>
         <member name="P:WithUnity.Tools.Log.DefaultOutputs">
@@ -86,32 +103,15 @@
             Contains a list of sinks to the methods used to implement them
             </summary>
         </member>
-<<<<<<< HEAD
-        <member name="M:WithUnity.Tools.Log.Initialise(WithUnity.Tools.Log.Level,WithUnity.Tools.Log.Sink[],System.Boolean,System.Boolean)">
-=======
-        <member name="P:WithUnity.Tools.Log.Locks">
-            <summary>
-            Mutex locks used across Process for locking the log file for a particular assembly.
-            </summary>
-        </member>
-        <member name="P:WithUnity.Tools.Log.LockOfLocks">
-            <summary>
-            Mutex lock to manage Locks.
-            </summary>
-        </member>
         <member name="M:WithUnity.Tools.Log.Initialise(WithUnity.Tools.Log.Level,WithUnity.Tools.Log.Sink[],System.Boolean,System.Boolean,System.String)">
->>>>>>> WU0001-AddingTheTools
             <summary>
             Initializas the log
             </summary>
             <param name="level">The minimum level of logging to record. (Verbose &lt; Debug &lt; Information &lt; Warning &lt; Error &lt; UnkownState)</param>
             <param name="sinks">An array of sinks you want to use</param>
-            <param name="timeOffset"></param>
+            <param name="timeOffset">Report the time offset in the log.</param>
             <param name="utc"><see langword="true"/> logs things against UTC time <see langword="false"/> logs against local system time.</param>
-<<<<<<< HEAD
-=======
-            <param name="logFileName">Optional name of the Log file, only used when there is a File sink, defaults to %TEMP%\EntryAssemblyName.log</param>
->>>>>>> WU0001-AddingTheTools
+            <param name="logFileName">Optional file name when logging to a file, the default is %TEMP%\%ApplicationAssemblyName%.log</param>
         </member>
         <member name="M:WithUnity.Tools.Log.SetLoggingLevel(WithUnity.Tools.Log.Level)">
             <summary>
@@ -133,17 +133,17 @@
             <param name="level">The level of the message</param>
             <param name="text"></param>
         </member>
-        <member name="M:WithUnity.Tools.Log.BaseLogging(WithUnity.Tools.Log.Level,System.String)">
+        <member name="M:WithUnity.Tools.Log.LevelLog(WithUnity.Tools.Log.Level,System.String)">
             <summary>
-            The base logging writing some text to the log
+            The base logging used by all variants Error, Warniung etc.
             </summary>
         </member>
-        <member name="M:WithUnity.Tools.Log.BaseLogging(WithUnity.Tools.Log.Level,System.Exception)">
+        <member name="M:WithUnity.Tools.Log.LevelLog(WithUnity.Tools.Log.Level,System.Exception)">
             <summary>
             The basic Logging for exception Logs the exception and all inner exceptions
             </summary>
         </member>
-        <member name="M:WithUnity.Tools.Log.BaseLogging(WithUnity.Tools.Log.Level,System.String,System.Object[])">
+        <member name="M:WithUnity.Tools.Log.LevelLog(WithUnity.Tools.Log.Level,System.String,System.Object[])">
             <summary>
             BaseLogging with a format string and an array of parameters
             </summary>
@@ -1064,152 +1064,12 @@
             <param name="result">The incoming result.</param>
             <returns>A simple Result with out the data.</returns>
         </member>
-        <member name="T:WithUnity.Tools.SecureStringExtensions">
-            <summary>
-            SecureString extension methods
-            and related string extension methods
-            </summary>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.WipeString(System.String)">
-            <summary>
-            Wipes the memory of an insecure string setting the characters to 0.
-            Users should set the length to 0 after a call to WipeString
-            to better hide the previous values length assign a new value to the 
-            immutable reference and allow GC to dispose the nulled strigns. 
-            See examples of use below.
-            </summary>
-            <param name="insecurePassword">a plain text string that needs to be wiped clean before being released back to general memory</param>
-            <returns></returns>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.UseContents(System.Security.SecureString,System.Object[],System.Func{System.Object[],System.String,WithUnity.Tools.Result},System.Boolean)">
-            <summary>
-            Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory.
-            The text is filled with NUL characters before releasing it and is by default garbage collected.
-            </summary>
-            <param name="securePassword">The hidden data</param>
-            <param name="parameters">An array of parameters that are used by the function</param>
-            <param name="func">The function you want to use the hidden data in</param>
-            <param name="collectGarbage">Do you want to Collect the Garbage or are you more worried about performance</param>
-            <returns>A Result as to whether the function was successful including the obj paramter after any changes that took place.</returns>
-            <remarks>The returned result may contain the object</remarks>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.UseContents``1(System.Security.SecureString,``0,System.Func{``0,System.String,WithUnity.Tools.Result{``0}},System.Boolean)">
-            <summary>
-            Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory.
-            The text is filled with NUL characters before releasing it and is by default garbage collected.
-            </summary>
-            <param name="securePassword">The hidden data</param>
-            <param name="parameter">An array of parameters that are used by the function</param>
-            <param name="func">The function you want to use the hidden data in</param>
-            <param name="collectGarbage">Do you want to Collect the Garbage or are you more worried about performance</param>
-            <returns>A Result as to whether the function was successful including the obj paramter after any changes that took place.</returns>
-            <remarks>The returned result may contain the object</remarks>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.UseContents(System.Security.SecureString,System.Func{System.String,WithUnity.Tools.Result},System.Boolean)">
-            <summary>
-            Allows the use of the obfuscated contents in a function that returns a Result with no risk of it being written to a swap file and or being copied about in memory.
-            The text is filled with NUL characters before releasing it and is by default garbage collected.
-            </summary>
-            <param name="securePassword">The hidden data</param>
-            <param name="func">The function you want to use the hidden data in</param>
-            <param name="collectGarbage">Do you want to Collect the Garbage or are you more worried about performance</param>
-            <returns>A Result as to whether the function was successful</returns>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.ConvertToUnsecureString(System.Security.SecureString)">
-            <summary>
-            Extracts the string hidden in the secure string.
-            Please note using this directly it is not advisable.
-            You need to be very careful of how you handle the revealed contents.
-            Please use one of the UseContents methods instead.
-            </summary>
-            <param name="securePassword"></param>
-            <returns>A valid MayBe&lt;string&gt;.Value containging of the contents of the SecureString 
-            or MayBe&lt;string&gt;.HasNoValue if securePassword is null</returns>
-            <remarks>To reduce visibility of the sensitive data in the SecureString
-            it is best to access this within fixed memory to ensure the sensitive
-            data remains in memory and does not get moved around in memory, 
-            leaving a trail of sensitive data images across memory or even worse gets
-            written to disk in a swap file or a memory dump. e.g.
-            
-            unsafe void method(SecureString ss)
-            {
-                string unsecureString;
-                fixed(char* = unsecureString = ss.ConvertToUnsecureString())
-                {
-                    ... 
-                    // do what you need to with unsecureString
-                    ...
-                    unsecureString.WipeString(); // WipeString clears the fixed memory with NUL.
-                }
-                // releases the nul filled string, lets garbage collection Collect it.
-                unsecureString = null; 
-                // Unfortunately the released string will always be the 
-                // same length as the sensitive data.
-                // You may want to collect the memory to remove even that information
-                GC.Collect();
-            }
-            
-            Unfortunately the only way to fix the memory is by assigning it to a pointer which is
-            intrinsically unsafe. However we never use the unsafe pointer only the fact that the
-            string is fixed in memory. This does force you to compile allowing the use of unsafe code.
-            It is never a good idea to leaving that compiler switch on for any large projects.
-            This is why UseContents is the prefered way of accessing the contents of a SecureString
-            It handles the memory management for you.
-            </remarks>
-            <exception cref="T:System.ArgumentNullException">Could theoretically be thrown, if there is an issue with the code.</exception>
-            <exception cref="T:System.NotSupportedException">May be thrown if run against the wrong version of .NET.</exception>
-            <exception cref="T:System.OutOfMemoryException">If the password is huge: over half the available memory.</exception>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.GetStringSecurityHash(System.String)">
-            <summary>
-            Creates a SHA512 hash for the text
-            </summary>
-            <param name="text">The text to hash</param>
-            <returns>a 64 character hash hex encoded hash</returns>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.GetSecureStringSecurityHash(System.Security.SecureString)">
-            <summary>
-            SecureString.GetHashCode() returns the hash of the SecureString not the string contained in it.
-            So two SecureStrings with the same string held inside have different hascodes.
-            To get the same hashout for the same string in you need to extract the string and take the hash of that.
-            </summary>
-            <param name="securePassword">The SecureString to call  this on.</param>
-            <returns>The strings SHA512 hash</returns>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.MoveToSecureString(System.String)">
-            <summary>
-            Moves a string to a SecureString. It clears the memory of the string and leaves it blank.
-            </summary>
-            <param name="password"></param>
-            <returns>A SecureString containing the string</returns>
-            <exception cref="T:System.ArgumentNullException">Could theoretically be thrown.</exception>  
-            <exception cref="T:System.ArgumentOutOfRangeException">Could theoretically be thrown.</exception>  
-            <exception cref="T:System.Security.Cryptography.CryptographicException">Could theoretically be thrown.</exception>  
-            <exception cref="T:System.NotSupportedException">Could theoretically be thrown.</exception>  
-            <remarks>Side effect the incoming string is nulled.
-            If you want to minimise the risk of the old nulled string been spotted giving 
-            the length of the secret in a swap 
-            file or in a memory dump, assign a different value to the string.
-            and GC.Collect() to free up the string.
-            </remarks>
-        </member>
-        <member name="M:WithUnity.Tools.SecureStringExtensions.EqualContents(System.Security.SecureString,System.Security.SecureString,System.Boolean)">
-            <summary>
-            Verifies if two SecureStrings Contents are equal.
-            </summary>
-            <param name="ss1">The first Secure String</param>
-            <param name="ss2">The second Secure String to compare it against.</param>
-            <param name="collectMemory">For security reasons it is best to collect memory
-            to reduce the chance of leaving any password length information lying about in memory.
-            Default Value is true.</param>
-            <returns>true if the contents of the two SecureStrings are equal</returns>
-        </member>
         <member name="T:WithUnity.Tools.ValueProperties.EmailAddress">
             <summary>
             A Value Property for validating email addresses.
             </summary>
             <remarks>
-                This is provided with minimal validataion for n EmailAddress. You may want to create your own variant with different validation.
+                This is provided with minimal validataion for an EmailAddress. You may want to create your own variant with different validation.
             </remarks>
         </member>
         <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.#ctor(WithUnity.Tools.MayBe{System.String})">
@@ -1246,8 +1106,8 @@
         </member>
         <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.EqualsCore(System.String)">
             <summary>
-            Not by the time this is called all checks for null and 
-            NoValue have akready been called so we just deal with the equality of valid objects.
+            Note: by the time this is called all checks for null and 
+            NoValue have already been called so we just deal with the equality of valid objects.
             </summary>
             <param name="other"></param>
             <returns>whether the two are equal</returns>

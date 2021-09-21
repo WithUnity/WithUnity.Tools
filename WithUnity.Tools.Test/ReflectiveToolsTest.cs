@@ -74,62 +74,6 @@ namespace WithUnity.Tools.Tests
             //Assert
             Assert.AreEqual(expectedMethodName, actualResult);
         }
-
-        //private T Testmethod<T>(T data, int index, IList<object> objects, string errorMessage)
-        //{
-        //    return data;
-        //}
-
-        //[Test]
-        //public void TestCallingMethod()
-        //{
-        //    // Arrange
-        //    GetType().GetMethods();
-
-        //    // Act
-
-        //    //Assert
-        //}
-
-        [Test]
-        public void TestShortName()
-
-        {
-            var missingAssembly = new MissingAssembly(GetType().FullName, "Community.Tools");
-
-            string LongName = missingAssembly.GetType().FullName;
-            string ShortName = LongName.ShortName();
-            string Name = missingAssembly.GetType().Name;
-
-            Assert.AreEqual(typeof(SecureStringExtensions).GetType().Name, typeof(SecureStringExtensions).GetType().FullName.ShortName());
-        }
-
-        [Test]
-        public void TestGetReferencedAssembliesFlat()
-        {
-            Type type = typeof(SecureStringExtensions).GetType();
-            List<string> assemblies = type.GetReferencedAssembliesFlat();
-            foreach(var assembly in assemblies)
-            {
-                Assert.AreEqual(assembly, assembly);
-            }
-        }
-
-    //    [Test]
-    //    public void TestLoadAllAssemblies()
-    //    {
-    //        // Arrange & Act
-    //        try
-    //        {
-    //            ListOfAssemblies listOfAssemblies = new ListOfAssemblies();
-    //        }
-    //        catch(Exception ex)
-    //        {
-    //            // Assert
-    //            Assert.Fail($"LoadAllAssemblies threw: '{ex.GetType().Name}' : '{ex.Message}'");
-    //        }
-
-    //    }
     }
 
     /// <summary>
