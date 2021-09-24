@@ -27,6 +27,7 @@ Result uses some Reflexive tools to log from where errors occur in the Logging.
 The Logging and the Reflexive tools are independent of using the Result validation mechanism.
 
 ## Detailed documentation 
+Please read AbridgedWithUnity.Tools.md for an example as to how to use the tools.
 Please read WithUnity.Tools.MD for detailed type and method information.
 
 ## License Agreement
