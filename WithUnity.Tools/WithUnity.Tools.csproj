@@ -2,10 +2,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentation>true</GenerateDocumentation>
     <PackageId>WithUnity.Tools</PackageId>
-    <Version>1.0.2-alpha</Version>
+    <Version>1.0.2-beta</Version>
     <Authors>Robin Murison</Authors>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>
@@ -27,9 +26,7 @@
       Result uses some Reflexive tools to log from where errors occur in the Logging.
       The Logging and the Reflexive tools are independent of using the Result validation mechanism.
     </Description>
-    <IncludeSymbols>true</IncludeSymbols>
     <Language>C#</Language>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ApplicationIcon>WithunityTools.ico</ApplicationIcon>
     <Copyright>Copyright 2015-2021 Robin Murison MIT License</Copyright>
     <PackageIcon>WithUnity.Toolsx64.png</PackageIcon>
@@ -64,6 +61,10 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -81,12 +82,20 @@
 
   <ItemGroup>
     <None Remove="LICENSE.txt" />
+    <None Remove="AbridgedWithUnity.Tools.md" />
     <None Remove="WithUnity.Tools.md" />
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\AbridgedWithUnity.Tools.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="..\WithUnity.Toolsx64.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -98,6 +107,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="PxtlCa.XmlCommentMarkDownGenerator.exe -i &quot;$(TargetDir)\WithUnity.Tools.xml&quot; -o  &quot;$(SolutionDir)WithUnity.Tools.md&quot;" />
+    <Exec Command="PxtlCa.XmlCommentMarkDownGenerator.exe -i &quot;$(TargetDir)\WithUnity.Tools.xml&quot; -o  &quot;$(SolutionDir)WithUnity.Tools.md&quot;&#xD;&#xA;" />
   </Target>
 </Project>
