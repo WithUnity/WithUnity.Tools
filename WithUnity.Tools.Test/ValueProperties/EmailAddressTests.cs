@@ -18,7 +18,10 @@ namespace WithUnity.Tools.Tests
     public class EmailAddressTests
     {
         [TestCase("asdadsaa.sss")]
-        public void NoAtFailure(string address)
+        [TestCase("asda")]
+        [TestCase("lidle")]
+        [TestCase("tesco")]
+        public void NoAtCausesInvalidCastException(string address)
         {
             // Arrange
             // Act
@@ -39,8 +42,35 @@ namespace WithUnity.Tools.Tests
             }
         }
 
+        [TestCase("asda@asda@asda")]
+        [TestCase("a@s@da")]
+        [TestCase("l@i@@le")]
+        [TestCase("t@es@co")]
+        public void MultipleAtCausesInvalidCastException(string address)
+        {
+            // Arrange
+            // Act
+            try
+            {
+                EmailAddress emailAddress = address;
+                // Asserts
+                Assert.Fail("email address without @ accepted.");
+            }
+            catch (InvalidCastException)
+            {
+                // Test passed
+            }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
+            }
+        }
+
+
+
         [Test]
-        public void LessThanThreeCharacterFailure()
+        public void NullCausesInvalidCastException()
         {
             // Arrange
             // Act
@@ -65,17 +95,44 @@ namespace WithUnity.Tools.Tests
             }
         }
 
-        [TestCase(" ")]
-        [TestCase("\t \r\n\vsd\t \r\n\v")]
-        [TestCase("\taa")]
-        [TestCase("\raa")]
-        [TestCase("\vaa")]
-        [TestCase("\faa")]
+        [TestCase(" a@b")]
+        [TestCase("\t \r\n\a@b\t \r\n\v")]
+        [TestCase("\ta@b")]
+        [TestCase("\ra@b")]
+        [TestCase("\va@b")]
+        [TestCase("\fa@b")]
+        public void AddressNeedsTrimmingCausesInvalidCastException(string address)
+        {
+            // Arrange
+            // Act
+            try
+            {
+                EmailAddress emailAddress = address;
+                // Asserts
+                Assert.Fail("short email accepted.");
+            }
+            catch (InvalidCastException)
+            {
+                // Various errprs can be returned so unsure which one
+            }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Wrong type of exception thrown {ex.GetType().Name}. Message is {ex.Message}");
+            }
+        }
+
+
+        [TestCase("sd")]
+        [TestCase("aa")]
+        [TestCase("aa")]
+        [TestCase("aa")]
+        [TestCase("aa")]
         [TestCase("ab")]
         [TestCase("c")]
         [TestCase("@1")]
         [TestCase("2@")]
-        public void LessThanThreeCharacterFailure(string address)
+        public void LessThanThreeCharacterCausesInvalidCastException(string address)
         {
             // Arrange
             // Act
@@ -99,7 +156,7 @@ namespace WithUnity.Tools.Tests
         [TestCase("@a.com")]
         [TestCase("@charlie.com")]
         [TestCase("@abc")]
-        public void NothingBeforeAt(string address)
+        public void NothingBeforeAtCausesInvalidCastException(string address)
         {
             try
             {
@@ -123,7 +180,7 @@ namespace WithUnity.Tools.Tests
         [TestCase("ape@")]
         [TestCase("charlie@")]
         [TestCase("abc@")]
-        public void NothingAfterAt(string address)
+        public void NothingAfterAtCausesInvalidCastException(string address)
         {
             try
             {
@@ -157,5 +214,117 @@ namespace WithUnity.Tools.Tests
             Assert.IsTrue(emailAddress.IsSuccess);
             Assert.AreEqual(emailAddress.Value, address);
         }
+        //////////////////////////
+        /// Repeat tests on Create
+        //////////////////////////
+        [TestCase("asdadsaa.sss")]
+        [TestCase("asda")]
+        [TestCase("lidle")]
+        [TestCase("tesco")]
+        public void NoAtCausesFailureOnCreate(string address)
+        {
+            // Arrange
+            // Act
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress(address);
+            // Asserts
+            Assert.IsFalse(emailAddressResult.IsSuccess);
+        }
+
+        [TestCase("asda@asda@asda")]
+        [TestCase("a@s@da")]
+        [TestCase("l@i@@le")]
+        [TestCase("t@es@co")]
+        public void MultipleAtCausesFailureOnCreate(string address)
+        {
+            // Arrange
+            // Act
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress(address);
+            // Asserts
+            Assert.IsFalse(emailAddressResult.IsSuccess);
+        }
+
+        [Test]
+        public void NullCausesFailureOnCreate()
+        {
+            // Arrange
+            // Act
+            // We are testing for an InvalidCastException being thrown on asssignment.
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress((string) null);
+            // Asserts
+            Assert.IsFalse(emailAddressResult.IsSuccess);
+        }
+
+
+        [TestCase(" a@b")]
+        [TestCase("\t \r\n\a@b\t \r\n\v")]
+        [TestCase("\ta@b")]
+        [TestCase("\ra@b")]
+        [TestCase("\va@b")]
+        [TestCase("\fa@b")]
+        public void AddressNeedsTrimmingCausesFailureOnCreate(string address)
+        {
+            // Arrange
+            // Act
+            // We are testing for an InvalidCastException being thrown on asssignment.
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress((string)null);
+            // Asserts
+            Assert.IsFalse(emailAddressResult.IsSuccess);
+        }
+        [TestCase("sd")]
+        [TestCase("aa")]
+        [TestCase("aa")]
+        [TestCase("aa")]
+        [TestCase("aa")]
+        [TestCase("ab")]
+        [TestCase("c")]
+        [TestCase("@1")]
+        [TestCase("2@")]
+        public void LessThanThreeCharacterCausesFailureOnCreate(string address)
+        {
+            // Arrange
+            // Act
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress(address);
+            // Asserts
+            Assert.IsFalse(emailAddressResult.IsSuccess);
+        }
+
+        [TestCase("@a.com")]
+        [TestCase("@charlie.com")]
+        [TestCase("@abc")]
+        public void NothingBeforeAtCausesFailureOnCreate(string address)
+        {
+            // Arrange
+            // Act
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress(address);
+            // Asserts
+            Assert.IsFalse(emailAddressResult.IsSuccess);
+        }
+
+        [TestCase("ape@")]
+        [TestCase("charlie@")]
+        [TestCase("abc@")]
+        public void NothingAfterAtCausesFailureOnCreate(string address)
+        {
+            // Arrange
+            // Act
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress(address);
+            // Asserts
+            Assert.IsFalse(emailAddressResult.IsSuccess);
+        }
+
+        [TestCase("robin@age.com")]
+        [TestCase("join@gmail.com")]
+        [TestCase("j@g")]
+        [TestCase("k@v")]
+        public void AddressAssignmentWorksOnCreate(string address)
+        {
+            // Arrange
+            // Act
+            Result<EmailAddress> emailAddressResult = EmailAddress.CreateEmailAddress(address);
+            // Asserts
+            Assert.IsTrue(emailAddressResult.IsSuccess);
+            Assert.AreEqual(emailAddressResult.Value.Value, address);
+        }
+
     }
 }

@@ -2,11 +2,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentation>true</GenerateDocumentation>
+    <Owners>Robin Neil Murison</Owners>
     <PackageId>WithUnity.Tools</PackageId>
-    <Version>1.0.2-alpha</Version>
-    <Authors>Robin Murison</Authors>
+    <Version>1.0.2</Version>
+    <Authors>Robin Neil Murison</Authors>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>
       WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
@@ -27,42 +27,24 @@
       Result uses some Reflexive tools to log from where errors occur in the Logging.
       The Logging and the Reflexive tools are independent of using the Result validation mechanism.
     </Description>
-    <IncludeSymbols>true</IncludeSymbols>
     <Language>C#</Language>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ApplicationIcon>WithunityTools.ico</ApplicationIcon>
-    <Copyright>Copyright 2015-2021 Robin Murison MIT License</Copyright>
+    <Copyright>Copyright 2015-2021 Robin Niel Murison, MIT License</Copyright>
     <PackageIcon>WithUnity.Toolsx64.png</PackageIcon>
     <PackageIconUrl>https://withunity.org/Tools/Icon/WithUnity.Toolsx64.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/WithUnity/WithUnity.Tools/projects/1</PackageProjectUrl>
     <RepositoryUrl>https://github.com/WithUnity/WithUnity.Tools</RepositoryUrl>
     <RepositoryType>Github public</RepositoryType>
-    <PackageTags>Functional Fluent Result MayBe Logging</PackageTags>
+    <PackageTags>Fluent Result MayBe Logging Tools ValueProperty</PackageTags>
     <Title>With Unity Tools</Title>
-    <Summary>
-      WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
-      We intend to add Task templates to provide appropriate parallel processing. Although C# Tasks are fine for the job Using of the templates would allow cross cutting logging and other concerns.
-
-      The two main features to make method declaration more honest. Use the MayBe structure when there is an expectation that null maybe a valid reference as a parameter.
-      WHen there is a possibility that a method may fail, use the Result&lt;T&gt; classe to return either the valid object or the relevant error message.
-      The backlog has a mission to add the option to use error codes to allow localized of error messages, where these messages need to be publically displayed.
-
-      There is also a Log class that can be initialized to provide automatic logging from the Result class. With Verbose successes and Error level failures failures and informational notes.
-
-      There is also the ValueProperty to create readonly properties. Used to add validation to individual properties and to make using the ValueProperty class transparent to the user.
-
-      There are also a few implementation of a ValueProperty showing how to validation should be implemeted in the constructor and should throw InvalidCastException when invalid data is passed in.
-
-      ValueProperty can be implicitly used as the underlying type, this is to make them just as usable as the underlying data type.
-
-      Result uses some Reflexive tools to log from where errors occur in the Logging.
-      The Logging and the Reflexive tools are independent of using the Result validation mechanism.
-    </Summary>
-    <PackageReleaseNotes>This is a test release to get all the issues of releasing a Nuget Package correct.</PackageReleaseNotes>
+    <PackageReleaseNotes>With Unity Tools
+Removed unused UnicodeString16 ValueProperty.</PackageReleaseNotes>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -77,16 +59,27 @@
     <DocumentationFile>C:\Users\Robin\Documents\GitHub\WithUnity.Tools\WithUnity.Tools\WithUnity.Tools.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="LICENSE.txt" />
+    <None Remove="AbridgedWithUnity.Tools.md" />
     <None Remove="WithUnity.Tools.md" />
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\AbridgedWithUnity.Tools.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="..\WithUnity.Toolsx64.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -98,6 +91,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="PxtlCa.XmlCommentMarkDownGenerator.exe -i &quot;$(TargetDir)\WithUnity.Tools.xml&quot; -o  &quot;$(SolutionDir)WithUnity.Tools.md&quot;" />
+    <Exec Command="PxtlCa.XmlCommentMarkDownGenerator.exe -i &quot;$(TargetDir)\WithUnity.Tools.xml&quot; -o  &quot;$(SolutionDir)WithUnity.Tools.md&quot;&#xD;&#xA;" />
   </Target>
 </Project>

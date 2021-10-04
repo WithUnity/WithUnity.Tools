@@ -26,26 +26,32 @@ namespace WithUnity.Tools.Tests
         [TestCase("\n\v")]
         [TestCase("\v")]
         [TestCase("\f")]
-        public void NullBlankPathfailure(string nullPath)
+        public void NullOrBlankPathThrowsInvalidCastException(string nullPath)
         {
             // Arrange
             // Act
             try
             {
-                FileExtension fileExtension = new FileExtension(nullPath);
+                FileExtension fileExtension = nullPath;
                 // Asserts
                 Assert.Fail("null or empty string was accepted in error.");
             }
             catch (InvalidCastException ex)
             {
                 // Asserts
-                Assert.IsTrue(ex.Message.Contains("File extensions cannot be blank or null"));
+                Assert.IsTrue(ex.Message.Contains("File extensions cannot be blank or null")|| ex.Message.Contains("Null file extension.") || ex.Message.Contains("File extensions has leading or trailing white space characters."));
+            }
+            catch (Exception ex)
+            {
+                // Asserts
+                Assert.Fail($"Unexpected Exception thrown Type: {ex.GetType().Name} Message: {ex.Message}");
             }
         }
 
-        [TestCase("/")]
-        [TestCase("\\")]
-        [TestCase(":")]
+        [TestCase("/a")]
+        [TestCase("\\a")]
+        [TestCase(":a")]
+        [TestCase(".a")]
         public void TestInvalidExtensionCharacters(string invalidPath)
         {
             // Arrange
@@ -53,7 +59,7 @@ namespace WithUnity.Tools.Tests
             // Act
             try
             {
-                fileExtension = new FileExtension(invalidPath);
+                fileExtension = invalidPath;
                 // Asserts
                 Assert.Fail("Invalid path was accepted in error.");
             }
@@ -72,48 +78,18 @@ namespace WithUnity.Tools.Tests
                     case ':':
                         Assert.IsTrue(ex.Message.Contains(@"File extensions cannot contain colons."));
                         break;
+                    case '.':
+                        Assert.IsTrue(ex.Message.Contains(@"The fileExtension should not contain full stops."));
+                        break;
                     default:
                         Assert.Fail("Someone added a testCase without adding the check for specific errors.");
                         break;
                 }
             }
-        }
-
-        [TestCase("*.Jpeg")]
-        [TestCase("*.jPeg")]
-        [TestCase("*.bmp")]
-        public void TestOuputExcludesAsteriskDot(string validExtension)
-        {
-            // Arrange
-            string expected = validExtension.Substring(2);
-
-            //Action
-            FileExtension fileExtension = new FileExtension(validExtension);
-
-            // Asserts
-            Assert.AreEqual(fileExtension.Value.Value, expected);
-        }
-
-        [TestCase("*.Jpe.g")]
-        [TestCase("*.jPe.g")]
-        [TestCase("*.bm.p")]
-        public void TestExtensionsMustNotContainFullStops(string invalidExtension)
-        {
-            // Arrange
-            string expected = invalidExtension.Substring(2);
-            FileExtension fileExtension = null;
-            try
-            {
-                //Action
-                fileExtension = new FileExtension(invalidExtension);
-                // Asserts
-                Assert.Fail("Invalid path including full stops was accepted in error.");
-            }
-            catch (InvalidCastException ex)
+            catch (Exception ex)
             {
                 // Asserts
-                Assert.IsTrue(ex.Message.Contains("Input string is not a valid file extension. Error: "));
-                Assert.IsTrue(ex.Message.Contains("The extension should not contain full stops."));
+                Assert.Fail($"Unexpected Exception thrown Type: {ex.GetType().Name} Message: {ex.Message}");
             }
         }
     }

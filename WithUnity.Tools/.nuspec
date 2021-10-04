@@ -2,16 +2,15 @@
 <package  xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>    
     <id>WithUnity.Tools</id>
-    <version>1.0.2-alpha</version>
+    <version>1.0.2</version>
     <title>With Unity Tools</title>
-    <authors>Robin Murison</authors>
-    <owners>Robin Murison</owners>
+    <authors>Robin Neil Murison</authors>
+    <owners>Robin Neil Murison</owners>
     <licenseUrl>https://withunity.org/Tools/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/WithUnity/WithUnity.Tools/projects/1</projectUrl>
     <iconUrl>https://withunity.org/Tools/Icon/WithUnity.Toolsx64.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <includeSymbols>true</includeSymbols>
-    <symbolPackageFormat>snupkg</symbolPackageFormat>
+    <readme>docs\README.md</readme>
     <description>
       WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
       We intend to add Task templates to provide appropriate parallel processing. Although C# Tasks are fine for the job Using of the templates would allow cross cutting coincerns to be 
@@ -42,7 +41,7 @@
     </dependencies>
     <summary>
       WithUnity.Tools Provides The Result class to allow fluent Validation.
-      The MayBe struct to make optional object parameters more evident and to cause ArgumentNullException to be thrown only if it is not used and the parameter is null.
+      The MayBe struct to make optional object parameters more evident and when using NullGuard.Fody to cause ArgumentNullException to be thrown only if it is not used and the parameter is null.
       It also allows logging to be added to the Validation.
 
       There is also the ValueProperty to create readonly properties. Used to add validation to individual properties and throw InvalidCastException if the data is not valid.
@@ -53,13 +52,15 @@
       Result uses some Reflexive tools to log from where errors occur in the Logging.
       The Logging and the Reflexive tools are independent of the Result validation mechanism and can be used without using Result fluent validation.
     </summary>
-    <includeSymbols>true</includeSymbols>
-    <symbolPackageFormat>snupkg</symbolPackageFormat>
-  </metadata>
+    <contentFiles>
+      <files include="AbridgedWithUnity.Tools.md" buildAction="None" copyToOutput="true" />
+      <files include="License.txt"  buildAction="None" copyToOutput="true" />
+      <files include="WithUnity.Tools.md" buildAction="None" copyToOutput="true" />
+    </contentFiles>  </metadata>
   <files>
-    <file src="WithUnity.Tools.1.0.2-alpha.nupkg" target="net5.0" />
     <file src="..\readme.md" target="docs\" />
     <file src="..\AbridgedWithUnity.Tools.md" target="docs\" />
+    <file src="..\WithUnity.Tools.md" target="docs\" />
     <file src="..\Security.md" target="docs\" />
   </files>
 </package>
