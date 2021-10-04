@@ -4,14 +4,13 @@
     <id>WithUnity.Tools</id>
     <version>1.0.2</version>
     <title>With Unity Tools</title>
-    <authors>Robin Murison</authors>
-    <owners>Robin Murison</owners>
+    <authors>Robin Neil Murison</authors>
+    <owners>Robin Neil Murison</owners>
     <licenseUrl>https://withunity.org/Tools/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/WithUnity/WithUnity.Tools/projects/1</projectUrl>
     <iconUrl>https://withunity.org/Tools/Icon/WithUnity.Toolsx64.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <readme>docs\README.md</readme>
-    <symbolPackageFormat>snupkg</symbolPackageFormat>
     <description>
       WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
       We intend to add Task templates to provide appropriate parallel processing. Although C# Tasks are fine for the job Using of the templates would allow cross cutting coincerns to be 
@@ -53,8 +52,6 @@
       Result uses some Reflexive tools to log from where errors occur in the Logging.
       The Logging and the Reflexive tools are independent of the Result validation mechanism and can be used without using Result fluent validation.
     </summary>
-    <includeSymbols>true</includeSymbols>
-    <symbolPackageFormat>snupkg</symbolPackageFormat>
     <contentFiles>
       <files include="AbridgedWithUnity.Tools.md" buildAction="None" copyToOutput="true" />
       <files include="License.txt"  buildAction="None" copyToOutput="true" />

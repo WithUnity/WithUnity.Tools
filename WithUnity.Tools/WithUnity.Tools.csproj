@@ -3,9 +3,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentation>true</GenerateDocumentation>
+    <Owners>Robin Neil Murison</Owners>
     <PackageId>WithUnity.Tools</PackageId>
     <Version>1.0.2</Version>
-    <Authors>Robin Murison</Authors>
+    <Authors>Robin Neil Murison</Authors>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>
       WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
@@ -28,15 +29,16 @@
     </Description>
     <Language>C#</Language>
     <ApplicationIcon>WithunityTools.ico</ApplicationIcon>
-    <Copyright>Copyright 2015-2021 Robin Murison MIT License</Copyright>
+    <Copyright>Copyright 2015-2021 Robin Niel Murison, MIT License</Copyright>
     <PackageIcon>WithUnity.Toolsx64.png</PackageIcon>
     <PackageIconUrl>https://withunity.org/Tools/Icon/WithUnity.Toolsx64.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/WithUnity/WithUnity.Tools/projects/1</PackageProjectUrl>
     <RepositoryUrl>https://github.com/WithUnity/WithUnity.Tools</RepositoryUrl>
     <RepositoryType>Github public</RepositoryType>
-    <PackageTags>Functional Fluent Result MayBe Logging</PackageTags>
+    <PackageTags>Fluent Result MayBe Logging Tools ValueProperty</PackageTags>
     <Title>With Unity Tools</Title>
-    <PackageReleaseNotes>This is a test release to get all the issues of releasing a Nuget Package correct.</PackageReleaseNotes>
+    <PackageReleaseNotes>With Unity Tools
+Removed unused UnicodeString16 ValueProperty.</PackageReleaseNotes>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

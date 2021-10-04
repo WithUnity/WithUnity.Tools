@@ -1072,7 +1072,7 @@
                 This is provided with minimal validataion for an EmailAddress. You may want to create your own variant with different validation.
             </remarks>
         </member>
-        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.TrimAndValidateEmailAddress(WithUnity.Tools.MayBe{System.String})">
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.ValidateEmailAddress(WithUnity.Tools.MayBe{System.String})">
             <summary>
             Trims any white space and validates an email address
             </summary>
@@ -1160,18 +1160,19 @@
                 This is provided with minimal validataion for a file fileExtension. You may want to create your own variant with different validation.
             </remarks>
         </member>
-        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.TrimAndValidateFileExtension(WithUnity.Tools.MayBe{System.String})">
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.ValidateFileExtension(WithUnity.Tools.MayBe{System.String})">
             <summary>
-            Trims and validates a file fileExtension
+            Validates a file fileExtension
             </summary>
             <param name="fileExtension"></param>
             <remarks>
             This method trims whitespace from the fileExtension and removes leading "*." and then ensures the file Extension is:
                 Not Null
-                Mot empty string (previously white space
-                Does not contain [\\,\/,\.,\:]
+                The string does not have leading or trailing white space characters.
+                Mot empty string
+                Does not contain ['\' | '/' | '.' | ':']
             </remarks>
-            <returns>A Result@lt;string&gt; that contains the trimmed string or an error message on validation failure</returns>
+            <returns>A Result@lt;string&gt; that contains the file extension or an error message on validation failure</returns>
         </member>
         <member name="M:WithUnity.Tools.ValueProperties.FileExtension.#ctor(WithUnity.Tools.MayBe{System.String},System.Boolean)">
             <summary>
@@ -1228,78 +1229,6 @@
             ValueProperty inner GetHash routine
             </summary>
             <returns>an Integer hash of the  FileExtension class</returns>
-        </member>
-        <member name="T:WithUnity.Tools.ValueProperties.UnicodeCharacter16">
-            <summary>
-            A string representing one Unicode Character based on 1 or 2 16 bit Unicode code points
-            </summary>
-            <remarks>
-                This is provided with minimal validataion for a uunicode character. You may want to create your own variant with different validation.
-            </remarks>
-        </member>
-        <member name="M:WithUnity.Tools.ValueProperties.UnicodeCharacter16.#ctor(WithUnity.Tools.MayBe{System.String})">
-            <summary>
-            Constructor for validating the unicode character
-            </summary>
-            <param name="input">Maybe a single Unicode Character in a string</param>
-            <exception cref="T:System.InvalidCastException">If the string is not a Unicode character</exception>
-            <exception cref="T:System.ArgumentNullException">If the string is null</exception>
-            <remarks>
-            This verifies:
-                That the string past in is a single Unicode Character;
-            Whether high and low surrogate code points are used in the correct order and 
-            
-            </remarks>
-            <exception cref="T:System.InvalidCastException">If the string is not a single Unicode character, Including a null string.</exception>
-        </member>
-        <member name="P:WithUnity.Tools.ValueProperties.UnicodeCharacter16.Utf32">
-            <summary>
-            Utf32 equivalent
-            </summary>
-        </member>
-        <member name="P:WithUnity.Tools.ValueProperties.UnicodeCharacter16.Utf8">
-            <summary>
-            The UTF 8 equivalent.
-            </summary>
-        </member>
-        <member name="T:WithUnity.Tools.ValueProperties.UnicodeString16">
-            <summary>
-            A C# string representing a valid UTF-16 string
-            </summary>
-            <remarks>
-                This checks that all the code points in the string form valid unicode characters there are all valid Unicode characters.
-            </remarks>
-        </member>
-        <member name="M:WithUnity.Tools.ValueProperties.UnicodeString16.#ctor(WithUnity.Tools.MayBe{System.String})">
-            <summary>
-            Constructor for validating the unicode string
-            </summary>
-            <param name="value"></param>
-            <exception cref="T:System.InvalidCastException">If the string is not a Unicode string</exception>
-            <exception cref="T:System.ArgumentNullException">If the string is null</exception>
-            <remarks>
-            This verifies:
-                That the string past in is a valid  Unicode string;
-            By checking if  high and low surrogate code points are used in the correct order and the single code points are used as single characters.
-            </remarks>
-        </member>
-        <member name="M:WithUnity.Tools.ValueProperties.UnicodeString16.GetUnicodeCharacter(WithUnity.Tools.MayBe{System.String})">
-            <summary>
-            Goes through a string returning valid Unicode characters
-            </summary>
-            <param name="input">A MayBe&lt;string&gt; input string.</param>
-            <returns>The next valid Unicode Character</returns>
-            <exception cref="T:System.InvalidCastException">Is thrown if the string is invalid Unicode</exception>
-        </member>
-        <member name="P:WithUnity.Tools.ValueProperties.UnicodeString16.Utf32String">
-            <summary>
-            Provides Utf32 equivalent.
-            </summary>
-        </member>
-        <member name="P:WithUnity.Tools.ValueProperties.UnicodeString16.Utf8String">
-            <summary>
-            Provides Utf32 equivalent.
-            </summary>
         </member>
         <member name="T:WithUnity.Tools.ValueProperty`2">
              <summary>
