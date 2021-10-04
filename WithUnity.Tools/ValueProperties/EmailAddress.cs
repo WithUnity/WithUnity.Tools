@@ -19,9 +19,32 @@ namespace WithUnity.Tools.ValueProperties
     public sealed class EmailAddress : ValueProperty<EmailAddress, string>
     {
         /// <summary>
-        /// The Main constructor for an email address
+        /// Trims any white space and validates an email address
         /// </summary>
         /// <param name="emailAddressValue"></param>
+        /// <remarks>
+        /// This verifies:  
+        ///     that the email is not <see langword="null"/>;
+        ///     that email is at leaset 3 characters long;
+        ///     that the email does not start with an @ sign;
+        ///     that the email does not end with an @ sign;
+        ///     that the email contains 1 and only 1 @ sign;
+        /// </remarks>
+        public static Result<string> ValidateEmailAddress(MayBe<string> emailAddressValue)
+        {
+            return (emailAddressValue.HasValue ? Result.Ok<string>(emailAddressValue.Value) : Result.Fail<string>("Null email Address"))
+                .Ensure(ema => ema.Length == ema.Trim().Length, "Email Address needs trimming")
+                .Ensure(ema => 3 <= ema.Length, "The email address is too short")
+                .Ensure(ema => 0 < ema.IndexOf("@", StringComparison.InvariantCulture), "No preceding name before @ sign in EmailAddress")
+                .Ensure(ema => ema.IndexOf("@", StringComparison.InvariantCulture) != (ema.Length - 1), "No domain name after @ sign in EmailAddress")
+                .Ensure(ema => ema.Split('@').Length == 2, @"There are {ema.Split('@').Length - 1} @ signs. Should be 1.");
+        }
+
+        /// <summary>
+        /// The main constructor for validating email addresses. This is used by implicit casts, when expecting a valid EmailAddress and throwing an exception on failure is a reasonable thing to do.
+        /// </summary>
+        /// <param name="emailAddressValue"></param>
+        /// <param name="validateAndThrowOnFailure">Validates the email address and throws InvalidCastException when true. Does nothing when false</param>
         /// <exception cref="InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
         /// <remarks>
         /// This verifies:  
@@ -31,30 +54,49 @@ namespace WithUnity.Tools.ValueProperties
         ///     that the email does not end with an @ sign;
         ///     that the email contains 1 and only 1 @ sign;
         /// </remarks>
-        public EmailAddress(MayBe<string> emailAddressValue) : base(emailAddressValue)
+        private EmailAddress(MayBe<string> emailAddressValue, bool validateAndThrowOnFailure = true) : base(emailAddressValue)
         {
-            Result<string> result = (emailAddressValue.HasValue ? Result.Ok<string>(emailAddressValue.Value) : Result.Fail<string>("Null email Address"))
-                .OnSuccess<string>(ema => ema.Trim())
-                .Ensure(ema => 3 <= ema.Length, "The email address is too short")
-                .Ensure(ema => 0 < ema.IndexOf("@", StringComparison.InvariantCulture), "No preceding name before @ sign in EmailAddress")
-                .Ensure(ema => ema.IndexOf("@", StringComparison.InvariantCulture) != (ema.Length - 1), "No domain name after @ sign in EmailAddress")
-                .Ensure(ema => ema.Split('@').Length == 2, @"There are {ema.Split('@').Length - 1} @ signs. Should be 1.")
-                .OnFailure(error => { throw new InvalidCastException(error); });
+            if (validateAndThrowOnFailure)
+            {
+                ValidateEmailAddress(emailAddressValue).OnFailure(error => { throw new InvalidCastException(error); });
+            }
         }
 
         /// <summary>
-        /// Implicit conversion for simpler readability to MayBe&lt;String&gt;
+        /// Use CreateEmailAddress for more concise error handling in cases where you are suspicious of the email source such as it comes from user input.
+        /// </summary>
+        /// <param name="emailAddressValue"></param>
+        /// <returns>Result&lt;EmailAddress&gt;</returns>
+        /// <remarks>
+        /// This verifies:  
+        ///     that the email is not <see langword="null"/>;
+        ///     that email is at leaset 3 characters long;
+        ///     that the email does not start with an @ sign;
+        ///     that the email does not end with an @ sign;
+        ///     that the email contains 1 and only 1 @ sign;
+        /// </remarks>
+        public static Result<EmailAddress> CreateEmailAddress(MayBe<string> emailAddressValue)
+        {
+            return ValidateEmailAddress(emailAddressValue).OnSuccess<string, EmailAddress>(v => new EmailAddress(v, false));
+        }
+
+        /// <summary>
+        /// Implicit conversion for simpler readability to MayBe&lt;String&gt;. Only use this implicit cast when expecting a valid EmailAddress and throwing an exception is a reasonable thing to do.
         /// </summary>
         /// <param name="possibleEmail"></param>
+        /// <exception cref="InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
+        /// <remarks>This implicitly casts a sting parameter to a MayBe&lt;string&gt; parameter and then use that implicit operator with the MayBe&lt;string&gt; parameter.
+        /// </remarks>
         public static implicit operator EmailAddress([AllowNull]string possibleEmail)
         {
             return new EmailAddress(new MayBe<string>(possibleEmail));
         }
 
         /// <summary>
-        /// Implicit conversion from May&lt;Be&gt; string to be more explicit about whether the string is null.
+        /// Implicit conversion from May&lt;Be&gt; string to be more explicit about whether the string is null. Only use this implicit cast when expecting a valid EmailAddress and throwing an exception is a reasonable thing to do.
         /// </summary>
         /// <param name="possibleEmail"></param>
+        /// <exception cref="InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
         public static implicit operator EmailAddress(MayBe<string> possibleEmail)
         {
             return new EmailAddress(possibleEmail);

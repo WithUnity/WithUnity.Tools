@@ -2,7 +2,7 @@
 <package  xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>    
     <id>WithUnity.Tools</id>
-    <version>1.0.2-beta</version>
+    <version>1.0.2</version>
     <title>With Unity Tools</title>
     <authors>Robin Murison</authors>
     <owners>Robin Murison</owners>
@@ -10,7 +10,6 @@
     <projectUrl>https://github.com/WithUnity/WithUnity.Tools/projects/1</projectUrl>
     <iconUrl>https://withunity.org/Tools/Icon/WithUnity.Toolsx64.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <includeSymbols>true</includeSymbols>
     <readme>docs\README.md</readme>
     <symbolPackageFormat>snupkg</symbolPackageFormat>
     <description>

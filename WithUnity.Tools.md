@@ -1063,7 +1063,7 @@
 |-----|------|
 |value: |The value to be stored|
 |isSuccess: |Whether the Result is a success (true) or a failure (false)|
-|error: |Text containing the an explanation of the error that caused a failure if it failed|
+|error: |Text containing an explanation of the error that caused a failure if it failed|
 |callingMethod: |The method that called the public constructor for logging purposes.|
 
 
@@ -1586,14 +1586,45 @@
 
 
 ---
-#### Method ValueProperties.EmailAddress.#ctor(WithUnity.Tools.MayBe{System.String})
+#### Method ValueProperties.EmailAddress.ValidateEmailAddress(WithUnity.Tools.MayBe{System.String})
 
- The Main constructor for an email address 
+ Trims any white space and validates an email address 
 
 |Name | Description |
 |-----|------|
 |emailAddressValue: ||
+
+
+> This verifies: that the email is not [[|]]; that email is at leaset 3 characters long; that the email does not start with an @ sign; that the email does not end with an @ sign; that the email contains 1 and only 1 @ sign; 
+
+
+
+---
+#### Method ValueProperties.EmailAddress.#ctor(WithUnity.Tools.MayBe{System.String},System.Boolean)
+
+ The main constructor for validating email addresses. This is used by implicit casts, when expecting a valid EmailAddress and throwing an exception on failure is a reasonable thing to do. 
+
+|Name | Description |
+|-----|------|
+|emailAddressValue: ||
+|validateAndThrowOnFailure: |Validates the email address and throws InvalidCastException when true. Does nothing when false|
 [[T:System.InvalidCastException|T:System.InvalidCastException]]: This is thrown if the string passed in is not a valid email with the appropriate error.
+
+
+
+> This verifies: that the email is not [[|]]; that email is at leaset 3 characters long; that the email does not start with an @ sign; that the email does not end with an @ sign; that the email contains 1 and only 1 @ sign; 
+
+
+
+---
+#### Method ValueProperties.EmailAddress.CreateEmailAddress(WithUnity.Tools.MayBe{System.String})
+
+ Use CreateEmailAddress for more concise error handling in cases where you are suspicious of the email source such as it comes from user input. 
+
+|Name | Description |
+|-----|------|
+|emailAddressValue: ||
+**Returns**: Result<EmailAddress>
 
 
 
@@ -1604,21 +1635,29 @@
 ---
 #### Method ValueProperties.EmailAddress.op_Implicit(System.String)~WithUnity.Tools.ValueProperties.EmailAddress
 
- Implicit conversion for simpler readability to MayBe<String> 
+ Implicit conversion for simpler readability to MayBe<String>. Only use this implicit cast when expecting a valid EmailAddress and throwing an exception is a reasonable thing to do. 
 
 |Name | Description |
 |-----|------|
 |possibleEmail: ||
+[[T:System.InvalidCastException|T:System.InvalidCastException]]: This is thrown if the string passed in is not a valid email with the appropriate error.
+
+
+
+>This implicitly casts a sting parameter to a MayBe<string> parameter and then use that implicit operator with the MayBe<string> parameter. 
+
 
 
 ---
 #### Method ValueProperties.EmailAddress.op_Implicit(WithUnity.Tools.MayBe{System.String})~WithUnity.Tools.ValueProperties.EmailAddress
 
- Implicit conversion from May<Be> string to be more explicit about whether the string is null. 
+ Implicit conversion from May<Be> string to be more explicit about whether the string is null. Only use this implicit cast when expecting a valid EmailAddress and throwing an exception is a reasonable thing to do. 
 
 |Name | Description |
 |-----|------|
 |possibleEmail: ||
+[[T:System.InvalidCastException|T:System.InvalidCastException]]: This is thrown if the string passed in is not a valid email with the appropriate error.
+
 
 
 ---
@@ -1656,23 +1695,104 @@
 
 
 
-> This is provided with minimal validataion for a file extension. You may want to create your own variant with different validation. 
+> This is provided with minimal validataion for a file fileExtension. You may want to create your own variant with different validation. 
 
 
 
 ---
-#### Method ValueProperties.FileExtension.#ctor(System.String)
+#### Method ValueProperties.FileExtension.ValidateFileExtension(WithUnity.Tools.MayBe{System.String})
 
- The constructor for a file extension 
+ Validates a file fileExtension 
 
 |Name | Description |
 |-----|------|
-|extension: |The initial file extension primitive|
+|fileExtension: ||
+
+
+> This method trims whitespace from the fileExtension and removes leading "*." and then ensures the file Extension is: Not Null The string does not have leading or trailing white space characters. Mot empty string Does not contain ['\' | '/' | '.' | ':'] 
+
+**Returns**: A Result@lt;string> that contains the file extension or an error message on validation failure
+
+
+
+---
+#### Method ValueProperties.FileExtension.#ctor(WithUnity.Tools.MayBe{System.String},System.Boolean)
+
+ The main constructor for a FileExtension. If validateAndThrowOnFailure is true it calls TrimAndValidateFileExtension and throws an InvalidCastException. 
+
+|Name | Description |
+|-----|------|
+|fileExtension: |The initial file fileExtension primitive|
+|validateAndThrowOnFailure: |Validates the email address and throws InvalidCastException when true. Does nothing when false|
 [[T:System.InvalidCastException|T:System.InvalidCastException]]: The message will contain any validation errors
 
 
 
-> It strips out any leading '*.'. It Verifies: The File Extension is not blank or [[|]]'; The File extension does not contain '\', '/', ':' or '.' 
+---
+#### Method ValueProperties.FileExtension.CreateFileExtension(WithUnity.Tools.MayBe{System.String})
+
+ Use CreateFileExtension for more concise error handling on input validation where you are suspicious of the file fileExtension, e.g. user input. 
+
+|Name | Description |
+|-----|------|
+|fileExtension: |A suspect file Extension|
+**Returns**: Result<FileExtension>
+
+
+
+> This verifies: that the email is not [[|]]; that email is at leaset 3 characters long; that the email does not start with an @ sign; that the email does not end with an @ sign; that the email contains 1 and only 1 @ sign; 
+
+
+
+---
+#### Method ValueProperties.FileExtension.op_Implicit(System.String)~WithUnity.Tools.ValueProperties.FileExtension
+
+ Implicit conversion for simpler readability to MayBe<String>. Use this implicit cast when expecting a valid FileExtension and throwing an exception is a reasonable thing to do. 
+
+|Name | Description |
+|-----|------|
+|possibleFileExtension: ||
+[[T:System.InvalidCastException|T:System.InvalidCastException]]: This is thrown if the string passed in is not a valid email with the appropriate error.
+
+
+
+---
+#### Method ValueProperties.FileExtension.op_Implicit(WithUnity.Tools.MayBe{System.String})~WithUnity.Tools.ValueProperties.FileExtension
+
+ Implicit conversion from May<Be> string to be more explicit about whether the string is null. Use this implicit cast when expecting a valid FileExtension and throwing an exception is a reasonable thing to do. 
+
+|Name | Description |
+|-----|------|
+|possibleFileExtension: ||
+[[T:System.InvalidCastException|T:System.InvalidCastException]]: This is thrown if the string passed in is not a valid email with the appropriate error.
+
+
+
+---
+#### Property ValueProperties.FileExtension.FileExtensionValue
+
+ The Valid File Extension's value 
+
+
+
+---
+#### Method ValueProperties.FileExtension.EqualsCore(System.String)
+
+ Note: by the time this is called all checks for null and NoValue have already been called so we just deal with the equality of valid objects. 
+
+|Name | Description |
+|-----|------|
+|other: ||
+**Returns**: whether the two are equal
+
+
+
+---
+#### Method ValueProperties.FileExtension.GetHashCode
+
+ ValueProperty inner GetHash routine 
+
+**Returns**: an Integer hash of the FileExtension class
 
 
 
@@ -1684,6 +1804,20 @@
 
 
 > This is provided with minimal validataion for a uunicode character. You may want to create your own variant with different validation. 
+
+
+
+---
+#### Method ValueProperties.UnicodeCharacter16.ValidateUnicodeCharacter16(WithUnity.Tools.MayBe{System.String})
+
+ Validates a single UTF16 character this may be 1 or 2 16 bit code points 
+
+|Name | Description |
+|-----|------|
+|input: |The inpout to verify|
+
+
+> This verifies that: the email is not [[|]]; email is at leaset 3 characters long; the email does not start with an @ sign; the email does not end with an @ sign; the email contains 1 and only 1 @ sign; the email does not need trimming. 
 
 
 

@@ -724,7 +724,7 @@
             </summary>
             <param name="value">The value to be stored</param>
             <param name="isSuccess">Whether the Result is a success (true) or a failure (false)</param>
-            <param name="error">Text containing the an explanation of the error that caused a failure if it failed</param>
+            <param name="error">Text containing an explanation of the error that caused a failure if it failed</param>
             <param name="callingMethod">The method that called the public constructor for logging purposes.</param>
         </member>
         <member name="M:WithUnity.Tools.Result`1.#ctor(`0,System.Exception,System.String)">
@@ -1072,12 +1072,42 @@
                 This is provided with minimal validataion for an EmailAddress. You may want to create your own variant with different validation.
             </remarks>
         </member>
-        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.#ctor(WithUnity.Tools.MayBe{System.String})">
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.TrimAndValidateEmailAddress(WithUnity.Tools.MayBe{System.String})">
             <summary>
-            The Main constructor for an email address
+            Trims any white space and validates an email address
             </summary>
             <param name="emailAddressValue"></param>
+            <remarks>
+            This verifies:  
+                that the email is not <see langword="null"/>;
+                that email is at leaset 3 characters long;
+                that the email does not start with an @ sign;
+                that the email does not end with an @ sign;
+                that the email contains 1 and only 1 @ sign;
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.#ctor(WithUnity.Tools.MayBe{System.String},System.Boolean)">
+            <summary>
+            The main constructor for validating email addresses. This is used by implicit casts, when expecting a valid EmailAddress and throwing an exception on failure is a reasonable thing to do.
+            </summary>
+            <param name="emailAddressValue"></param>
+            <param name="validateAndThrowOnFailure">Validates the email address and throws InvalidCastException when true. Does nothing when false</param>
             <exception cref="T:System.InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
+            <remarks>
+            This verifies:  
+                that the email is not <see langword="null"/>;
+                that email is at leaset 3 characters long;
+                that the email does not start with an @ sign;
+                that the email does not end with an @ sign;
+                that the email contains 1 and only 1 @ sign;
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.CreateEmailAddress(WithUnity.Tools.MayBe{System.String})">
+            <summary>
+            Use CreateEmailAddress for more concise error handling in cases where you are suspicious of the email source such as it comes from user input.
+            </summary>
+            <param name="emailAddressValue"></param>
+            <returns>Result&lt;EmailAddress&gt;</returns>
             <remarks>
             This verifies:  
                 that the email is not <see langword="null"/>;
@@ -1089,15 +1119,19 @@
         </member>
         <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.op_Implicit(System.String)~WithUnity.Tools.ValueProperties.EmailAddress">
             <summary>
-            Implicit conversion for simpler readability to MayBe&lt;String&gt;
+            Implicit conversion for simpler readability to MayBe&lt;String&gt;. Only use this implicit cast when expecting a valid EmailAddress and throwing an exception is a reasonable thing to do.
             </summary>
             <param name="possibleEmail"></param>
+            <exception cref="T:System.InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
+            <remarks>This implicitly casts a sting parameter to a MayBe&lt;string&gt; parameter and then use that implicit operator with the MayBe&lt;string&gt; parameter.
+            </remarks>
         </member>
         <member name="M:WithUnity.Tools.ValueProperties.EmailAddress.op_Implicit(WithUnity.Tools.MayBe{System.String})~WithUnity.Tools.ValueProperties.EmailAddress">
             <summary>
-            Implicit conversion from May&lt;Be&gt; string to be more explicit about whether the string is null.
+            Implicit conversion from May&lt;Be&gt; string to be more explicit about whether the string is null. Only use this implicit cast when expecting a valid EmailAddress and throwing an exception is a reasonable thing to do.
             </summary>
             <param name="possibleEmail"></param>
+            <exception cref="T:System.InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
         </member>
         <member name="P:WithUnity.Tools.ValueProperties.EmailAddress.EmailAddressValue">
             <summary>
@@ -1123,22 +1157,77 @@
             FileExtension ValueProperty
             </summary>
             <remarks>
-                This is provided with minimal validataion for a file extension. You may want to create your own variant with different validation.
+                This is provided with minimal validataion for a file fileExtension. You may want to create your own variant with different validation.
             </remarks>
         </member>
-        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.#ctor(System.String)">
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.TrimAndValidateFileExtension(WithUnity.Tools.MayBe{System.String})">
             <summary>
-            The constructor for a file extension
+            Trims and validates a file fileExtension
             </summary>
-            <param name="extension">The initial file extension primitive</param>
-            <exception cref="T:System.InvalidCastException">The message will contain any validation errors</exception>
+            <param name="fileExtension"></param>
             <remarks>
-            It strips out any leading '*.'.
-            
-            It Verifies:
-                The File Extension is not blank or <see langword="null"/>';
-                The File extension does not contain '\', '/', ':' or '.'
+            This method trims whitespace from the fileExtension and removes leading "*." and then ensures the file Extension is:
+                Not Null
+                Mot empty string (previously white space
+                Does not contain [\\,\/,\.,\:]
             </remarks>
+            <returns>A Result@lt;string&gt; that contains the trimmed string or an error message on validation failure</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.#ctor(WithUnity.Tools.MayBe{System.String},System.Boolean)">
+            <summary>
+            The main constructor for a FileExtension.  If validateAndThrowOnFailure is true it calls TrimAndValidateFileExtension and throws an InvalidCastException.
+            </summary>
+            <param name="fileExtension">The initial file fileExtension primitive</param>
+            <param name="validateAndThrowOnFailure">Validates the email address and throws InvalidCastException when true. Does nothing when false</param>
+            <exception cref="T:System.InvalidCastException">The message will contain any validation errors</exception>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.CreateFileExtension(WithUnity.Tools.MayBe{System.String})">
+            <summary>
+            Use CreateFileExtension for more concise error handling on input validation where you are suspicious of the file fileExtension, e.g. user input.
+            </summary>
+            <param name="fileExtension">A suspect file Extension</param>
+            <returns>Result&lt;FileExtension&gt;</returns>
+            <remarks>
+            This verifies:  
+                that the email is not <see langword="null"/>;
+                that email is at leaset 3 characters long;
+                that the email does not start with an @ sign;
+                that the email does not end with an @ sign;
+                that the email contains 1 and only 1 @ sign;
+            </remarks>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.op_Implicit(System.String)~WithUnity.Tools.ValueProperties.FileExtension">
+            <summary>
+            Implicit conversion for simpler readability to MayBe&lt;String&gt;. Use this implicit cast when expecting  a valid FileExtension and throwing an exception is a reasonable thing to do.
+            </summary>
+            <param name="possibleFileExtension"></param>
+            <exception cref="T:System.InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.op_Implicit(WithUnity.Tools.MayBe{System.String})~WithUnity.Tools.ValueProperties.FileExtension">
+            <summary>
+            Implicit conversion from May&lt;Be&gt; string to be more explicit about whether the string is null. Use this implicit cast when expecting a valid FileExtension and throwing an exception is a reasonable thing to do.
+            </summary>
+            <param name="possibleFileExtension"></param>
+            <exception cref="T:System.InvalidCastException">This is thrown if the string passed in is not a valid email with the appropriate error.</exception>
+        </member>
+        <member name="P:WithUnity.Tools.ValueProperties.FileExtension.FileExtensionValue">
+            <summary>
+            The Valid File Extension's value
+            </summary>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.EqualsCore(System.String)">
+            <summary>
+            Note: by the time this is called all checks for null and 
+            NoValue have already been called so we just deal with the equality of valid objects.
+            </summary>
+            <param name="other"></param>
+            <returns>whether the two are equal</returns>
+        </member>
+        <member name="M:WithUnity.Tools.ValueProperties.FileExtension.GetHashCode">
+            <summary>
+            ValueProperty inner GetHash routine
+            </summary>
+            <returns>an Integer hash of the  FileExtension class</returns>
         </member>
         <member name="T:WithUnity.Tools.ValueProperties.UnicodeCharacter16">
             <summary>

@@ -18,6 +18,45 @@ namespace WithUnity.Tools.ValueProperties
     /// </remarks>
     public sealed class UnicodeCharacter16 : ValueProperty<UnicodeCharacter16, string>
     {
+
+        /// <summary>
+        /// Validates a single UTF16 character this may be 1 or 2 16 bit code points
+        /// </summary>
+        /// <param name="input">The inpout to verify</param>
+        /// <remarks>
+        /// This verifies that:  
+        ///     the email is not <see langword="null"/>;
+        ///     email is at leaset 3 characters long;
+        ///     the email does not start with an @ sign;
+        ///     the email does not end with an @ sign;
+        ///     the email contains 1 and only 1 @ sign;
+        ///     the email does not need trimming.
+        /// </remarks>
+        public static Result<string> ValidateUnicodeCharacter16(MayBe<string> input)
+        {
+            const string invalidSingleHighPoint = "Invalid single high surrogate code point.";
+            const string invalidSingleLowPoint = "Invalid single low surrogate code point.";
+            const string notASinglePoint = "This is not a single Unicode character.";
+            Result<string> result = Result.Initialize(input, "Null string is not Unicode Character")
+                .Ensure(value => 1 <= value.Length && value.Length <= 2, $"A Unicode 16 character should contain  1 or 2 code points. This has {input.Value.Length}.")
+                .Ensure(value => !Char.IsHighSurrogate(value[0]), invalidSingleHighPoint);
+            if (result.IsSuccess)
+            {
+                if(input.Value.Length == 1)
+                {
+                    return result.Ensure(value => value[0] != 0xfffe && value[0] != 0xffff, $"Disallowed end code point {(int)input.Value[0]:X}")
+                        .Ensure(value => !Char.IsLowSurrogate(value[0]), invalidSingleLowPoint);
+
+                }
+                else
+                {
+                    return result.Ensure(value => !Char.IsLowSurrogate(value[1]), invalidSingleLowPoint);
+                }
+            }
+            return result;
+                
+        }
+
         /// <summary>
         /// Constructor for validating the unicode character
         /// </summary>
@@ -78,10 +117,6 @@ namespace WithUnity.Tools.ValueProperties
                     throw new InvalidCastException(invalidSingleHighPoint);
                 }
                 throw new InvalidCastException(notASinglePoint);
-            }
-            else
-            {
-                throw new InvalidCastException("Null string is not Unicode Character");
             }
         }
 

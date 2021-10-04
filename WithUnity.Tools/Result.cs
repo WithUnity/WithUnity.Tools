@@ -357,7 +357,7 @@ namespace WithUnity.Tools
         /// </summary>
         /// <param name="value">The value to be stored</param>
         /// <param name="isSuccess">Whether the Result is a success (true) or a failure (false)</param>
-        /// <param name="error">Text containing the an explanation of the error that caused a failure if it failed</param>
+        /// <param name="error">Text containing an explanation of the error that caused a failure if it failed</param>
         /// <param name="callingMethod">The method that called the public constructor for logging purposes.</param>
         protected internal Result(T value, bool isSuccess, string error, string callingMethod)
             : base(isSuccess, error, callingMethod)
