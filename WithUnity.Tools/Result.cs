@@ -262,7 +262,7 @@ namespace WithUnity.Tools
             {
                 error = string.Empty;
             }
-            return new(value, value != null, error, callingMethod);
+            return new Result<T>(value, value != null, error, callingMethod);
         }
 
         /// <summary>

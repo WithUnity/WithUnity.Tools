@@ -6,6 +6,7 @@
 |2021/09/03|1.0.0.0|Robin Murison|First public publication|
 |2021/09/16|1.0.0.1|Robin Murison|Corrected ReadMe.md and added more comprehensive Unit Tests for the Log class.|
 |2021/09/21|1.0.2.0-alpha|Robin Murison|Preparing for publication on NUGET|
+|2021/10/14|1.2.1.0|Robin Murison|Down graded to Core 2.1 to increase support to early versions|
 
 ##Abstract
 WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
@@ -28,7 +29,7 @@ The Logging and the Reflexive tools are independent of using the Result validati
 
 ## Detailed documentation 
 Please read AbridgedWithUnity.Tools.md for an example as to how to use the tools.
-Please read WithUnity.Tools.MD for detailed type and method information.
+Please read WithUnity.Tools.xml for detailed type and method information.
 
 ## License Agreement
 MIT License
