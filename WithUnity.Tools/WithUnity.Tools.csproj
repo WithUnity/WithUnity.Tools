@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentation>true</GenerateDocumentation>
     <Owners>Robin Neil Murison</Owners>
     <PackageId>WithUnity.Tools</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.2.1</Version>
     <Authors>Robin Neil Murison</Authors>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Description>
-      WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
+    <Description>WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
       We intend to add Task templates to provide appropriate parallel processing. Although C# Tasks are fine for the job Using of the templates would allow cross cutting logging and other concerns.
 
       The two main features to make method declaration more honest. Use the MayBe structure when there is an expectation that null maybe a valid reference as a parameter.
@@ -26,7 +25,8 @@
 
       Result uses some Reflexive tools to log from where errors occur in the Logging.
       The Logging and the Reflexive tools are independent of using the Result validation mechanism.
-    </Description>
+
+Dependent on CoreApp2.1</Description>
     <Language>C#</Language>
     <ApplicationIcon>WithunityTools.ico</ApplicationIcon>
     <Copyright>Copyright 2015-2021 Robin Niel Murison, MIT License</Copyright>
@@ -43,8 +43,8 @@ Removed unused UnicodeString16 ValueProperty.</PackageReleaseNotes>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <AssemblyVersion>1.0.2</AssemblyVersion>
-    <FileVersion>1.0.2</FileVersion>
+    <AssemblyVersion>1.2.1</AssemblyVersion>
+    <FileVersion>1.2.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -67,7 +67,6 @@ Removed unused UnicodeString16 ValueProperty.</PackageReleaseNotes>
   <ItemGroup>
     <None Remove="LICENSE.txt" />
     <None Remove="AbridgedWithUnity.Tools.md" />
-    <None Remove="WithUnity.Tools.md" />
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
