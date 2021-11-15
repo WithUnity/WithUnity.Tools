@@ -173,7 +173,7 @@ namespace WithUnity.Tools
             EntryAssemblyName = Assembly.GetEntryAssembly().GetName().Name;
             if (logFileName == null)
             {
-                LogFileName = $"{Path.Join(Environment.GetEnvironmentVariable("TEMP"),EntryAssemblyName)}.log";
+                LogFileName = $"{Path.Combine(Environment.GetEnvironmentVariable("TEMP"),EntryAssemblyName)}.log";
             }
             else
             {

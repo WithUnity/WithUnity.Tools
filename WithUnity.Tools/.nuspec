@@ -2,7 +2,7 @@
 <package  xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>    
     <id>WithUnity.Tools</id>
-    <version>1.0.2</version>
+    <version>2.0.3</version>
     <title>With Unity Tools</title>
     <authors>Robin Neil Murison</authors>
     <owners>Robin Neil Murison</owners>
@@ -32,7 +32,7 @@
       The Logging and the Reflexive tools are independent of using the Result validation mechanism.
     </description>
     <releaseNotes>
-      The 1.0.2-alpha release has added a Summary to the nuget package and has added the automatically generated WithUnity.Tools.MD to document the Tools
+      The 2.0.3 release has just moved to .NET  Standard 2.0
     </releaseNotes>
     <copyright>Copyright 2015-2021 Robin Murison. Under MIT License</copyright>
     <tags>Fluent Result MayBe Logging</tags>

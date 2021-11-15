@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentation>true</GenerateDocumentation>
     <Owners>Robin Neil Murison</Owners>
     <PackageId>WithUnity.Tools</PackageId>
-    <Version>1.2.1</Version>
+    <Version>2.0.3</Version>
     <Authors>Robin Neil Murison</Authors>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>WithUnity.Tools Make C# nearer a Functional language by allowing method declaration to be much more honest and adding fluent Validation.
@@ -25,8 +25,7 @@
 
       Result uses some Reflexive tools to log from where errors occur in the Logging.
       The Logging and the Reflexive tools are independent of using the Result validation mechanism.
-
-Dependent on CoreApp2.1</Description>
+  </Description>
     <Language>C#</Language>
     <ApplicationIcon>WithunityTools.ico</ApplicationIcon>
     <Copyright>Copyright 2015-2021 Robin Niel Murison, MIT License</Copyright>
